@@ -71,15 +71,12 @@ needed. The initial message catalogue includes `REGISTER`, `LOGIN`,
 
 ## 6. Proposed task allocation
 
-Fill in member names after group registration. The roles can be combined or
-split based on the final group size.
-
 | Member | Proposed responsibility |
 | --- | --- |
-| Member 1: `[name]` | C socket server, framing, connection/session handling |
-| Member 2: `[name]` | Accounts, SQLite schema, access control, activity log |
-| Member 3: `[name]` | Tkinter GUI, room and test screens, client protocol integration |
-| Member 4: `[name]` | Practice/history/statistics, test cases, integration and presentation |
+| Trần Hữu Đức (`20225963`) | C TCP socket handling, message framing, multi-client connections, and test-room lifecycle/timers |
+| Trần Anh Dũng (`20226031`) | Project lead; coordinate scope and architecture, maintain the protocol contract, integrate modules, and lead the final demo |
+| Trần Cao Phong (`20226061`) | Account registration/login, sessions and access control, SQLite schema/persistence, and activity logging |
+| Lê Diễm Hằng (`20225970`) | Tkinter GUI and client integration, practice/history/statistics screens, and end-to-end test scenarios |
 
 ## 7. Current progress
 

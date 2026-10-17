@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08131f">
+  <link rel="icon" href="data:,">
+  <title>Online Testing Application — Checkpoint 1</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #08131f;
+      --panel: #101f2d;
+      --panel-2: #152738;
+      --ink: #edf5f7;
+      --muted: #9eb2bc;
+      --line: #29404e;
+      --mint: #72f0c0;
+      --cyan: #65c8f2;
+      --orange: #ffb86b;
+      --pink: #ff8297;
+      --violet: #b6a3ff;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; }
+    body {
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: #030a11;
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+    }
+    button { font: inherit; }
+
+    #deck {
+      position: relative;
+      width: min(100vw, 177.7778vh);
+      height: min(100vh, 56.25vw);
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 88% 2%, #143047 0, transparent 34%),
+        radial-gradient(ellipse at 4% 100%, #132638 0, transparent 30%),
+        var(--bg);
+      box-shadow: 0 24px 90px #0009;
+      container-type: inline-size;
+    }
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: none;
+      padding: 5.2% 6.2% 6.8%;
+      overflow: hidden;
+      background-image: linear-gradient(#ffffff06 1px, transparent 1px), linear-gradient(90deg, #ffffff06 1px, transparent 1px);
+      background-size: 5.4% 9.6%;
+    }
+    .slide.active { display: flex; flex-direction: column; animation: arrive .32s ease-out; }
+    @keyframes arrive { from { opacity: .35; transform: translateX(12px); } to { opacity: 1; transform: none; } }
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: .7em;
+      margin-bottom: .75em;
+      color: var(--mint);
+      font-size: clamp(10px, 1.05cqw, 16px);
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { width: 1.7em; height: 2px; background: var(--mint); content: ""; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 11ch; margin-bottom: .26em; font-size: clamp(42px, 6.2cqw, 94px); line-height: .99; letter-spacing: -.055em; }
+    h2 { margin-bottom: .28em; font-size: clamp(28px, 3.45cqw, 52px); line-height: 1.04; letter-spacing: -.04em; }
+    h3 { margin-bottom: .45em; font-size: clamp(15px, 1.5cqw, 23px); }
+    p, li { color: var(--muted); font-size: clamp(12px, 1.25cqw, 19px); line-height: 1.48; }
+    strong { color: var(--ink); }
+    .subtitle { max-width: 55ch; font-size: clamp(16px, 1.8cqw, 27px); line-height: 1.4; }
+    .topline { display: flex; align-items: flex-start; justify-content: space-between; gap: 2rem; }
+    .slide-num { color: #74909f; font: 700 clamp(11px, 1.1cqw, 17px)/1 ui-monospace, monospace; }
+    .content { flex: 1; min-height: 0; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2.2%; height: 100%; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6%; }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: linear-gradient(145deg, #132433eF, #0b1824f2);
+      box-shadow: 0 10px 25px #0002;
+    }
+    .card-pad { padding: 5.5%; }
+    .tag { display: inline-flex; align-items: center; gap: .45em; padding: .45em .75em; border: 1px solid #ffffff20; border-radius: 99px; color: var(--muted); font-size: clamp(9px, .86cqw, 13px); font-weight: 700; }
+    .tag.mint { color: var(--mint); border-color: #72f0c055; background: #72f0c011; }
+    .tag.orange { color: var(--orange); border-color: #ffb86b55; background: #ffb86b11; }
+    .tag.cyan { color: var(--cyan); border-color: #65c8f255; background: #65c8f211; }
+    .tag.violet { color: var(--violet); border-color: #b6a3ff55; background: #b6a3ff11; }
+    .accent { color: var(--mint); }
+    .muted { color: var(--muted); }
+    .tiny { color: var(--muted); font-size: clamp(9px, .88cqw, 13px); }
+    .icon-box { display: grid; width: 3.1em; height: 3.1em; place-items: center; border: 1px solid #72f0c044; border-radius: 14px; color: var(--mint); background: #72f0c012; }
+    .icon-box svg { width: 58%; height: 58%; }
+    .bullet-list { display: grid; gap: .8em; padding: 0; margin: 1em 0 0; list-style: none; }
+    .bullet-list li { display: flex; align-items: flex-start; gap: .7em; }
+    .bullet-list li::before { flex: 0 0 .55em; width: .55em; height: .55em; margin-top: .48em; border-radius: 50%; background: var(--mint); content: ""; }
+
+    /* Slide 1 */
+    .cover { justify-content: center; }
+    .cover .title-wrap { position: relative; z-index: 2; max-width: 61%; }
+    .cover h1 span { color: var(--mint); }
+    .cover-meta { display: flex; flex-wrap: wrap; gap: .7em; margin-top: 1.65em; }
+    .hero-art { position: absolute; top: 13%; right: 4%; width: 42%; height: 72%; }
+    .hero-art .orbit { transform-origin: center; animation: spin 36s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .cover-foot { position: absolute; right: 6.2%; bottom: 8%; color: #87a2af; font: 700 clamp(10px, .95cqw, 14px)/1.4 ui-monospace, monospace; letter-spacing: .08em; }
+
+    /* Slide 2 */
+    .mode-card { position: relative; min-height: 0; overflow: hidden; }
+    .mode-card h3 { margin-top: 1.1em; }
+    .mode-card .number { position: absolute; right: 5%; top: 2%; color: #ffffff09; font: 900 clamp(70px, 10cqw, 150px)/1 ui-monospace, monospace; }
+    .mode-card svg { width: 100%; height: 34%; margin-top: 4%; }
+    .mode-points { display: flex; flex-wrap: wrap; gap: .5em; margin-top: 1em; }
+
+    /* Slide 3 */
+    .architecture { display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; gap: 3.5%; height: 72%; margin-top: 2%; }
+    .arch-node { position: relative; min-height: 70%; display: flex; flex-direction: column; justify-content: center; }
+    .arch-node.server { border-color: #72f0c077; box-shadow: 0 0 35px #72f0c012; }
+    .arch-node.storage { min-height: 56%; }
+    .node-head { display: flex; align-items: center; gap: 1em; }
+    .node-icon { display: grid; width: 3.5em; height: 3.5em; flex: 0 0 auto; place-items: center; border-radius: 16px; color: var(--cyan); background: #65c8f21a; }
+    .node-icon svg { width: 58%; height: 58%; }
+    .node-lines { margin-top: 1.2em; padding-top: 1em; border-top: 1px solid var(--line); }
+    .node-lines span { display: inline-block; margin: .2em .25em .2em 0; padding: .35em .55em; border-radius: 6px; background: #ffffff0b; color: #bfd0d5; font: 600 clamp(9px, .9cqw, 14px)/1.2 ui-monospace, monospace; }
+    .arch-arrow { position: absolute; top: 50%; width: 8%; height: 2px; background: var(--mint); }
+    .arch-arrow::after { position: absolute; right: 0; top: -4px; width: 8px; height: 8px; border-top: 2px solid var(--mint); border-right: 2px solid var(--mint); transform: rotate(45deg); content: ""; }
+    .arch-arrow.left { left: 29.4%; }
+    .arch-arrow.right { left: 62.4%; }
+    .arrow-label { position: absolute; top: 42%; color: var(--muted); font: 600 clamp(8px, .8cqw, 12px)/1.2 ui-monospace, monospace; }
+    .arrow-label.left { left: 28%; }
+    .arrow-label.right { left: 63%; color: var(--violet); }
+    .arch-note { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 1em; margin-top: 1.5%; padding: 1.1em 1.4em; border: 1px solid #65c8f233; border-radius: 12px; background: #65c8f20a; }
+
+    /* Slide 4 */
+    .protocol-layout { display: grid; grid-template-columns: 1fr .9fr; gap: 4%; align-items: stretch; height: 73%; margin-top: 2%; }
+    .code-window { overflow: hidden; border: 1px solid #355061; border-radius: 16px; background: #071018; }
+    .window-bar { display: flex; align-items: center; gap: .4em; height: 2.6em; padding: 0 1em; border-bottom: 1px solid #223845; color: #86a0aa; font: 600 clamp(9px, .9cqw, 13px)/1 ui-monospace, monospace; }
+    .window-dot { width: .7em; height: .7em; border-radius: 50%; background: var(--pink); }
+    .window-dot:nth-child(2) { background: var(--orange); }
+    .window-dot:nth-child(3) { background: var(--mint); }
+    pre { margin: 0; padding: 1.25em 1.4em; color: #c8e6df; font: 500 clamp(10px, 1.05cqw, 16px)/1.65 ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap; }
+    .protocol-layout .code-window pre { font-size: clamp(8px, .8cqw, 13px); line-height: 1.75; }
+    .proto-lines { display: grid; gap: .75em; }
+    .proto-step { display: grid; grid-template-columns: 2.5em 1fr; align-items: center; gap: .9em; padding: .9em 1em; }
+    .proto-step .step-id { display: grid; width: 2.2em; height: 2.2em; place-items: center; border-radius: 50%; background: #72f0c016; color: var(--mint); font: 800 1em ui-monospace, monospace; }
+    .proto-step p { margin: .18em 0 0; font-size: clamp(10px, 1cqw, 15px); }
+
+    /* Slide 5 */
+    .test-layout { display: grid; grid-template-columns: 1.1fr .9fr; gap: 3%; height: 76%; margin-top: 2%; }
+    .flow { display: flex; align-items: center; gap: .5em; margin: 1.1em 0; }
+    .flow-step { position: relative; flex: 1; min-width: 0; padding: .8em .6em; border: 1px solid var(--line); border-radius: 10px; background: #10202d; text-align: center; }
+    .flow-step b { display: block; font-size: clamp(9px, .95cqw, 14px); }
+    .flow-step small { display: block; margin-top: .35em; color: var(--muted); font-size: clamp(8px, .75cqw, 11px); }
+    .flow-chevron { color: var(--mint); font-size: 1.2em; }
+    .app-window { overflow: hidden; border: 1px solid #355061; border-radius: 15px; background: #0b1721; box-shadow: 0 16px 30px #0003; }
+    .app-top { display: flex; align-items: center; justify-content: space-between; padding: .8em 1em; border-bottom: 1px solid #273b48; color: #bed0d5; font-size: clamp(9px, .9cqw, 14px); }
+    .app-body { padding: 1em; }
+    .room-row { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 1em; padding: .72em .5em; border-bottom: 1px solid #ffffff0b; color: #d4e1e4; font-size: clamp(9px, .9cqw, 14px); }
+    .status-dot { display: inline-flex; align-items: center; gap: .4em; color: var(--orange); font-size: .88em; }
+    .status-dot::before { width: .55em; height: .55em; border-radius: 50%; background: currentColor; content: ""; }
+    .status-dot.live { color: var(--mint); }
+    .status-dot.done { color: #93a6af; }
+    .mock-button { padding: .45em .8em; border: 0; border-radius: 8px; background: var(--mint); color: #092016; font-size: .8em; font-weight: 800; }
+    .question-mock { display: grid; grid-template-columns: 1fr auto; gap: 1em; align-items: start; }
+    .choice { margin-top: .45em; padding: .5em .7em; border: 1px solid #324858; border-radius: 8px; color: #a8bbc3; font-size: clamp(8px, .8cqw, 12px); }
+    .choice.selected { border-color: var(--mint); color: var(--ink); background: #72f0c011; }
+
+    /* Slide 6 */
+    .practice-layout { display: grid; grid-template-columns: .9fr 1.1fr; align-items: center; gap: 5%; height: 77%; margin-top: 1%; }
+    .practice-screen { position: relative; padding: 5%; border: 1px solid #39505e; border-radius: 22px; background: linear-gradient(150deg, #182b39, #0b1722); box-shadow: 0 20px 40px #0003; }
+    .timer-ring { display: grid; width: 5.2em; height: 5.2em; place-items: center; border: 6px solid #72f0c044; border-top-color: var(--mint); border-right-color: var(--mint); border-radius: 50%; color: var(--ink); font: 800 clamp(14px, 1.45cqw, 22px)/1 ui-monospace, monospace; transform: rotate(-20deg); }
+    .timer-ring span { transform: rotate(20deg); }
+    .score-card { display: flex; align-items: center; gap: 1.2em; padding: 1.1em; border: 1px solid #72f0c044; border-radius: 14px; background: #72f0c00b; }
+    .score-big { color: var(--mint); font: 900 clamp(32px, 4cqw, 60px)/1 ui-monospace, monospace; }
+    .practice-flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: .7em; margin-top: 1.2em; }
+    .practice-flow .flow-step { min-height: 4.5em; display: grid; place-items: center; }
+    .practice-flow .flow-step.active { border-color: #65c8f288; background: #65c8f211; }
+
+    /* Slide 7 */
+    .data-layout { display: grid; grid-template-columns: .9fr 1.1fr; gap: 3%; height: 76%; margin-top: 2%; }
+    .data-layout > .card:last-child { display: flex; min-height: 0; flex-direction: column; }
+    .data-layout > .card:last-child .chart { flex: 1 1 auto; min-height: 0; height: auto; }
+    .topic-list { display: grid; gap: .65em; }
+    .topic-row { display: grid; grid-template-columns: 2.4em 1fr auto; align-items: center; gap: .7em; padding: .65em .8em; border: 1px solid #ffffff12; border-radius: 11px; background: #ffffff06; }
+    .topic-mark { display: grid; width: 2em; height: 2em; place-items: center; border-radius: 8px; color: var(--cyan); background: #65c8f21a; font-weight: 800; }
+    .difficulty { display: flex; gap: .2em; }
+    .difficulty i { width: .42em; height: .75em; border-radius: 4px; background: #304958; }
+    .difficulty i.on { background: var(--orange); }
+    .chart { width: 100%; height: 100%; }
+    .chart-grid { stroke: #29404e; stroke-width: 1; }
+    .chart-label { fill: #90a9b3; font: 12px ui-monospace, monospace; }
+    .chart-bar { fill: var(--mint); }
+    .chart-bar.secondary { fill: var(--cyan); }
+    .chart-value { fill: #eaf7f5; font: 700 12px ui-monospace, monospace; }
+
+    /* Slide 8 */
+    .guard-layout { display: grid; grid-template-columns: 1fr .92fr; gap: 4%; height: 77%; margin-top: 2%; }
+    .guard-stack { display: grid; align-content: center; gap: .8em; }
+    .guard-row { display: grid; grid-template-columns: 3em 1fr auto; align-items: center; gap: 1em; padding: 1em; }
+    .guard-num { display: grid; width: 2.5em; height: 2.5em; place-items: center; border-radius: 12px; color: var(--violet); background: #b6a3ff16; font: 800 1em ui-monospace, monospace; }
+    .guard-row p { margin: .2em 0 0; font-size: clamp(10px, .95cqw, 14px); }
+    .state-diagram { display: grid; align-content: center; gap: 1.2em; padding: 7%; }
+    .state-node { padding: .95em; border: 1px solid var(--line); border-radius: 12px; text-align: center; background: #ffffff07; }
+    .state-node.active { border-color: var(--mint); background: #72f0c011; }
+    .state-arrow { color: var(--mint); text-align: center; font: 700 1.15em ui-monospace, monospace; }
+
+    /* Slide 9 */
+    .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.3%; margin-top: 1.6%; }
+    .person-card { min-height: 0; padding: 6%; }
+    .avatar { display: grid; width: 3em; height: 3em; place-items: center; margin-bottom: .9em; border: 1px solid #65c8f255; border-radius: 50%; color: var(--cyan); background: #65c8f211; font: 900 1.05em ui-monospace, monospace; }
+    .person-card.lead { border-color: #72f0c077; background: linear-gradient(145deg, #18332f, #0b1824); }
+    .person-card.lead .avatar { color: var(--mint); border-color: #72f0c077; background: #72f0c01a; }
+    .person-card h3 { font-size: clamp(11px, 1.1cqw, 16px); }
+    .person-card .student-id { display: block; margin: -.2em 0 .75em; color: #8da5af; font: 600 clamp(8px, .78cqw, 11px) ui-monospace, monospace; }
+    .person-card p { margin: 0; font-size: clamp(8px, .84cqw, 12px); line-height: 1.4; }
+    .progress-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: .7em; margin-top: 2.2%; }
+    .progress-item { padding: .8em; border-top: 2px solid #344b58; background: #ffffff05; }
+    .progress-item.done { border-color: var(--mint); }
+    .progress-item.now { border-color: var(--orange); }
+    .progress-item b { display: block; margin-bottom: .25em; font-size: clamp(9px, .9cqw, 13px); }
+    .progress-item small { color: var(--muted); font-size: clamp(8px, .75cqw, 11px); }
+    .progress-caption { display: flex; align-items: center; justify-content: space-between; margin-top: .8em; }
+
+    /* Deck controls */
+    .controls { position: absolute; z-index: 10; right: 2.4%; bottom: 2.3%; display: flex; align-items: center; gap: .55em; }
+    .control-btn { display: grid; width: 2.55em; height: 2.55em; place-items: center; border: 1px solid #426071; border-radius: 50%; background: #10202dec; color: var(--ink); cursor: pointer; }
+    .control-btn:hover { border-color: var(--mint); color: var(--mint); }
+    .control-btn:disabled { opacity: .35; cursor: default; }
+    .control-btn svg { width: 1em; height: 1em; }
+    #counter { min-width: 4em; color: #9bb0b9; text-align: center; font: 700 .9em ui-monospace, monospace; }
+    .progress-track { position: absolute; z-index: 11; right: 0; bottom: 0; left: 0; height: 4px; background: #ffffff13; }
+    #progress { width: 11.11%; height: 100%; background: linear-gradient(90deg, var(--mint), var(--cyan)); transition: width .25s ease; }
+    .notes-toggle { position: absolute; z-index: 12; left: 2.4%; bottom: 2.2%; padding: .7em .9em; border: 1px solid #365060; border-radius: 9px; background: #10202dec; color: #a9bdc5; cursor: pointer; font-size: clamp(9px, .82cqw, 12px); }
+    .notes { position: absolute; z-index: 20; right: 2.5%; bottom: 8%; left: 2.5%; display: none; padding: 1.1em 1.35em; border: 1px solid #72f0c066; border-radius: 13px; background: #07131df5; box-shadow: 0 12px 36px #0008; color: #dbe8e9; font-size: clamp(10px, 1cqw, 15px); line-height: 1.45; }
+    .notes.visible { display: block; }
+    .notes b { color: var(--mint); }
+    .keyboard-hint { position: absolute; left: 50%; bottom: 2.8%; color: #718a95; transform: translateX(-50%); font-size: clamp(8px, .75cqw, 11px); white-space: nowrap; }
+    .sample-stamp { display: inline-flex; align-items: center; gap: .5em; padding: .45em .7em; border: 1px solid #ffb86b66; border-radius: 7px; color: var(--orange); background: #ffb86b10; font: 800 clamp(8px, .75cqw, 11px) ui-monospace, monospace; letter-spacing: .08em; }
+
+    @media (max-width: 760px) {
+      .slide { padding: 5% 5% 10%; }
+      .cover .title-wrap { max-width: 72%; }
+      .hero-art { right: -8%; width: 48%; opacity: .72; }
+      .architecture { gap: 2%; }
+      .arch-node { padding: 4%; }
+      .arch-arrow.left { left: 30%; }
+      .arch-arrow.right { left: 62%; }
+      .team-grid { gap: .8%; }
+      .person-card { padding: 4%; }
+    }
+    @media print {
+      html, body { width: 100%; height: auto; overflow: visible; background: white; }
+      #deck { width: 100%; height: auto; overflow: visible; box-shadow: none; }
+      .slide { position: relative; display: flex !important; width: 100%; height: 56.25vw; page-break-after: always; animation: none; }
+      .controls, .progress-track, .notes-toggle, .notes, .keyboard-hint { display: none !important; }
+      @page { size: 13.333in 7.5in; margin: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main id="deck" aria-label="Checkpoint 1 presentation">
+    <section class="slide cover active" data-title="Project overview">
+      <div class="title-wrap">
+        <div class="eyebrow">Checkpoint 01 · October 20, 2026</div>
+        <h1>Online<br>Testing<br><span>Application</span></h1>
+        <p class="subtitle">A low-level TCP client/server system for timed tests, practice quizzes, and result tracking.</p>
+        <div class="cover-meta">
+          <span class="tag mint">C / POSIX TCP server</span>
+          <span class="tag cyan">Tkinter GUI client</span>
+          <span class="tag violet">SQLite persistence</span>
+        </div>
+      </div>
+      <svg class="hero-art" viewBox="0 0 560 520" role="img" aria-label="Illustration of clients connected to a central test server">
+        <defs>
+          <linearGradient id="orb" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#72f0c0"/><stop offset="1" stop-color="#65c8f2"/></linearGradient>
+          <filter id="glow"><feGaussianBlur stdDeviation="15" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <circle cx="285" cy="255" r="182" fill="none" stroke="#294957" stroke-width="1" stroke-dasharray="4 9"/>
+        <circle class="orbit" cx="285" cy="255" r="220" fill="none" stroke="#65c8f222" stroke-width="1" stroke-dasharray="2 12"/>
+        <path d="M135 170 C190 192 205 216 229 239 M430 154 C385 190 364 214 340 238 M285 356 L285 308" fill="none" stroke="#65c8f2" stroke-width="2" stroke-dasharray="7 8"/>
+        <circle cx="135" cy="170" r="5" fill="#72f0c0" filter="url(#glow)"/><circle cx="430" cy="154" r="5" fill="#65c8f2" filter="url(#glow)"/><circle cx="285" cy="356" r="5" fill="#b6a3ff" filter="url(#glow)"/>
+        <g transform="translate(212 185)"><rect width="146" height="142" rx="30" fill="#122a38" stroke="url(#orb)" stroke-width="2"/><rect x="35" y="34" width="76" height="53" rx="8" fill="#07131f" stroke="#72f0c0"/><path d="M47 49h52M47 61h35M47 73h42" stroke="#65c8f2" stroke-width="4" stroke-linecap="round"/><path d="M53 102h40M73 87v15" stroke="#72f0c0" stroke-width="4" stroke-linecap="round"/><circle cx="121" cy="111" r="5" fill="#72f0c0"/></g>
+        <g transform="translate(70 112)"><rect width="92" height="76" rx="18" fill="#122434" stroke="#65c8f2"/><circle cx="46" cy="27" r="11" fill="#65c8f2"/><path d="M24 59c2-15 42-15 44 0" fill="none" stroke="#65c8f2" stroke-width="6" stroke-linecap="round"/></g>
+        <g transform="translate(387 96)"><rect width="92" height="76" rx="18" fill="#122434" stroke="#72f0c0"/><circle cx="46" cy="27" r="11" fill="#72f0c0"/><path d="M24 59c2-15 42-15 44 0" fill="none" stroke="#72f0c0" stroke-width="6" stroke-linecap="round"/></g>
+        <g transform="translate(239 354)"><rect width="92" height="76" rx="18" fill="#122434" stroke="#b6a3ff"/><circle cx="46" cy="27" r="11" fill="#b6a3ff"/><path d="M24 59c2-15 42-15 44 0" fill="none" stroke="#b6a3ff" stroke-width="6" stroke-linecap="round"/></g>
+        <text x="86" y="222" fill="#9eb2bc" font-size="12" font-family="monospace">ROOM OWNER</text><text x="393" y="204" fill="#9eb2bc" font-size="12" font-family="monospace">PARTICIPANT</text><text x="242" y="452" fill="#9eb2bc" font-size="12" font-family="monospace">PRACTICE USER</text>
+      </svg>
+      <div class="cover-foot">GROUP · 20225963 / 20226031 / 20226061 / 20225970</div>
+      <aside class="notes"><b>Opening:</b> “Our project is an online multiple-choice testing application. We are focusing on a real TCP client/server design in C, with a desktop GUI so both room owners and participants can use it.”</aside>
+    </section>
+
+    <section class="slide" data-title="Objectives and modes">
+      <div class="topline"><div><div class="eyebrow">01 · Product goals</div><h2>Two ways to test.<br><span class="accent">One trusted server.</span></h2></div><span class="slide-num">02 / 09</span></div>
+      <div class="content grid-2">
+        <article class="card mode-card card-pad">
+          <span class="number">01</span><span class="tag mint">TEST MODE</span>
+          <h3>Organized, timed rooms</h3>
+          <p>A user creates a room, chooses the question count and duration, invites participants, and controls when the test starts or ends.</p>
+          <svg viewBox="0 0 430 150" aria-label="Test room lifecycle illustration">
+            <path d="M63 75H350" stroke="#304957" stroke-width="4"/><path d="M80 75H170M214 75H304" stroke="#72f0c0" stroke-width="3" stroke-dasharray="6 7"/>
+            <circle cx="65" cy="75" r="34" fill="#17332f" stroke="#72f0c0" stroke-width="2"/><circle cx="215" cy="75" r="34" fill="#153243" stroke="#65c8f2" stroke-width="2"/><circle cx="365" cy="75" r="34" fill="#26303a" stroke="#9eb2bc" stroke-width="2"/>
+            <text x="65" y="80" fill="#dff9ee" text-anchor="middle" font-size="13" font-family="monospace">READY</text><text x="215" y="80" fill="#e5f6fa" text-anchor="middle" font-size="13" font-family="monospace">LIVE</text><text x="365" y="80" fill="#dbe5e8" text-anchor="middle" font-size="13" font-family="monospace">DONE</text>
+            <text x="65" y="129" fill="#9eb2bc" text-anchor="middle" font-size="11" font-family="monospace">join</text><text x="215" y="129" fill="#9eb2bc" text-anchor="middle" font-size="11" font-family="monospace">answer</text><text x="365" y="129" fill="#9eb2bc" text-anchor="middle" font-size="11" font-family="monospace">score</text>
+          </svg>
+          <div class="mode-points"><span class="tag">early submit</span><span class="tag">change answers</span><span class="tag">server timer</span></div>
+        </article>
+        <article class="card mode-card card-pad">
+          <span class="number">02</span><span class="tag cyan">PRACTICE MODE</span>
+          <h3>Self-paced practice with a limit</h3>
+          <p>A learner picks a question count and time limit. The server scores the attempt and returns the number of correct answers when it ends.</p>
+          <svg viewBox="0 0 430 150" aria-label="Practice test illustration">
+            <rect x="27" y="20" width="376" height="110" rx="17" fill="#0a1722" stroke="#29404e"/>
+            <rect x="48" y="41" width="211" height="14" rx="7" fill="#263b48"/><rect x="48" y="41" width="139" height="14" rx="7" fill="#65c8f2"/>
+            <text x="48" y="83" fill="#eaf4f4" font-size="17" font-family="system-ui">Question 7 of 10</text><text x="48" y="108" fill="#9eb2bc" font-size="12" font-family="monospace">02:14 REMAINING</text>
+            <circle cx="334" cy="73" r="33" fill="#102a38" stroke="#65c8f2" stroke-width="2"/><text x="334" y="80" fill="#65c8f2" text-anchor="middle" font-size="20" font-weight="700" font-family="monospace">7/10</text>
+          </svg>
+          <div class="mode-points"><span class="tag">choose filters</span><span class="tag">instant result</span><span class="tag">history</span></div>
+        </article>
+      </div>
+      <aside class="notes"><b>Talking point:</b> “Test Mode is for a room owner and a group of participants. Practice Mode uses the same question and scoring foundations, but does not need a room or other participants.”</aside>
+    </section>
+
+    <section class="slide" data-title="Architecture">
+      <div class="topline"><div><div class="eyebrow">02 · Proposed system</div><h2>Direct TCP.<br><span class="accent">Server-authoritative.</span></h2></div><span class="slide-num">03 / 09</span></div>
+      <div class="content">
+        <div class="architecture">
+          <article class="card arch-node card-pad">
+            <div class="node-head"><div class="node-icon"><svg viewBox="0 0 40 40" fill="none"><rect x="5" y="6" width="30" height="20" rx="3" stroke="currentColor" stroke-width="2"/><path d="M12 33h16M20 26v7M10 12h20M10 17h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div><div><span class="tag cyan">CLIENT</span><h3 style="margin:.45em 0 0">Python · Tkinter</h3></div></div>
+            <div class="node-lines"><span>login / register</span><span>room & quiz screens</span><span>history & charts</span></div>
+          </article>
+          <article class="card arch-node server card-pad">
+            <div class="node-head"><div class="node-icon" style="color:var(--mint);background:#72f0c018"><svg viewBox="0 0 40 40" fill="none"><rect x="7" y="5" width="26" height="30" rx="5" stroke="currentColor" stroke-width="2"/><path d="M12 12h16M12 18h16M12 24h9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="27" cy="27" r="2" fill="currentColor"/></svg></div><div><span class="tag mint">CORE</span><h3 style="margin:.45em 0 0">C · POSIX sockets</h3></div></div>
+            <div class="node-lines"><span>auth & access</span><span>rooms & deadlines</span><span>answers & scoring</span></div>
+          </article>
+          <article class="card arch-node storage card-pad">
+            <div class="node-head"><div class="node-icon" style="color:var(--violet);background:#b6a3ff18"><svg viewBox="0 0 40 40" fill="none"><ellipse cx="20" cy="9" rx="13" ry="5" stroke="currentColor" stroke-width="2"/><path d="M7 9v21c0 3 6 5 13 5s13-2 13-5V9M7 19c0 3 6 5 13 5s13-2 13-5M7 29c0 3 6 5 13 5s13-2 13-5" stroke="currentColor" stroke-width="2"/></svg></div><div><span class="tag violet">PERSISTENCE</span><h3 style="margin:.45em 0 0">SQLite</h3></div></div>
+            <div class="node-lines"><span>users / questions</span><span>rooms / attempts</span><span>activity log</span></div>
+          </article>
+          <div class="arch-arrow left"></div><div class="arrow-label left">TCP · JSONL</div>
+          <div class="arch-arrow right"></div><div class="arrow-label right">C API</div>
+        </div>
+        <div class="arch-note"><span class="tag mint">TRUST BOUNDARY</span><p style="margin:0">The server owns deadlines, permissions, answer state, and scoring. Clients display data and send actions; they do not decide the result.</p></div>
+      </div>
+      <aside class="notes"><b>Talking point:</b> “We keep the network programming in the C server. The GUI connects directly over TCP, so we do not need an HTTP or WebSocket gateway. SQLite is local to the server process in the first version.”</aside>
+    </section>
+
+    <section class="slide" data-title="Application protocol">
+      <div class="topline"><div><div class="eyebrow">03 · Application-layer protocol</div><h2>One JSON message<br><span class="accent">per TCP line.</span></h2></div><span class="slide-num">04 / 09</span></div>
+      <div class="content protocol-layout">
+        <div class="code-window">
+          <div class="window-bar"><i class="window-dot"></i><i class="window-dot"></i><i class="window-dot"></i><span style="margin-left:.7em">JSONL · TCP stream · UTF-8 · LF 0x0A</span></div>
+          <pre><span style="color:#72f0c0">→ client request</span>
+{"type":"ANSWER_SET","request_id":42,"data":{"question_id":8,"choice":"B"}}<span style="color:#ffb86b;font-weight:800">\n</span>
+
+<span style="color:#65c8f2">← server response</span>
+{"type":"RESPONSE","request_id":42,"ok":true,"data":{"saved":true}}<span style="color:#ffb86b;font-weight:800">\n</span>
+
+<span style="color:#ffb86b">\n is the visible notation for one LF byte (0x0A).</span></pre>
+        </div>
+        <div class="proto-lines">
+          <article class="card proto-step"><span class="step-id">01</span><div><strong>Frame the byte stream</strong><p>Buffer partial reads until `\n`; split multiple messages from one read.</p></div></article>
+          <article class="card proto-step"><span class="step-id">02</span><div><strong>Correlate requests</strong><p>`request_id` matches a response to its request; errors return stable codes.</p></div></article>
+          <article class="card proto-step"><span class="step-id">03</span><div><strong>Protect scoring</strong><p>Question delivery omits the correct choice. Only the server calculates scores.</p></div></article>
+          <article class="card proto-step"><span class="step-id">04</span><div><strong>Handle stream I/O</strong><p>Use receive buffering and `send_all()` for partial reads and writes.</p></div></article>
+        </div>
+      </div>
+      <aside class="notes"><b>Talking point:</b> “TCP has no message boundaries. We chose JSON Lines because it is easy to inspect during development. The server must still handle data split across reads or several JSON messages arriving together.”</aside>
+    </section>
+
+    <section class="slide" data-title="Test mode">
+      <div class="topline"><div><div class="eyebrow">04 · Test Mode</div><h2>Room control +<br><span class="accent">fair timing.</span></h2></div><span class="slide-num">05 / 09</span></div>
+      <div class="content test-layout">
+        <div>
+          <div class="flow" aria-label="Test lifecycle">
+            <div class="flow-step"><b>NOT STARTED</b><small>create · join</small></div><span class="flow-chevron">›</span>
+            <div class="flow-step" style="border-color:#65c8f288"><b>ONGOING</b><small>answer · submit</small></div><span class="flow-chevron">›</span>
+            <div class="flow-step"><b>FINISHED</b><small>score · review</small></div>
+          </div>
+          <ul class="bullet-list">
+            <li><span>Owner sets question count and duration; starts/ends the room.</span></li>
+            <li><span>Participants can join only before the room starts.</span></li>
+            <li><span>Answers can be changed until early submit or server deadline.</span></li>
+            <li><span>On timeout, the server scores and notifies every participant.</span></li>
+          </ul>
+        </div>
+        <div class="app-window">
+          <div class="app-top"><span><span class="sample-stamp" style="margin-right:.65em">ILLUSTRATIVE UI</span>ROOM 041 · Networking Basics</span><span class="status-dot live">ONGOING</span></div>
+          <div class="app-body">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1em"><span class="tag orange">TIME LEFT · 08:42</span><span class="tiny">Question 3 / 10</span></div>
+            <div class="question-mock">
+              <div><strong style="font-size:clamp(10px,1.1cqw,16px)">Which call accepts a TCP connection?</strong>
+                <div class="choice">A &nbsp; connect()</div><div class="choice selected">B &nbsp; accept()</div><div class="choice">C &nbsp; listen()</div><div class="choice">D &nbsp; bind()</div>
+              </div>
+              <div class="timer-ring"><span>08:42</span></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.2em"><span class="tiny">Answer saved · can be changed</span><button class="mock-button">Submit early</button></div>
+          </div>
+        </div>
+      </div>
+      <aside class="notes"><b>Talking point:</b> “The room state changes only on the server. The timer is also server-side, so changing the client clock cannot extend a test. Participants may revise answers while the room is open.”</aside>
+    </section>
+
+    <section class="slide" data-title="Practice mode">
+      <div class="topline"><div><div class="eyebrow">05 · Practice Mode</div><h2>Short feedback loop.<br><span class="accent">Immediate score.</span></h2></div><span class="slide-num">06 / 09</span></div>
+      <div class="content practice-layout">
+        <div>
+          <span class="tag cyan">PRACTICE SESSION · ILLUSTRATIVE UI</span>
+          <h3 style="margin-top:1em">A learner controls the session settings</h3>
+          <ul class="bullet-list">
+            <li><span>Choose the number of questions and a time limit.</span></li>
+            <li><span>Filter by topic or difficulty when that feature is enabled.</span></li>
+            <li><span>Review the number of correct answers at completion.</span></li>
+            <li><span>Save the attempt for later history and statistics.</span></li>
+          </ul>
+          <div class="practice-flow">
+            <div class="flow-step active"><b>SETUP</b></div><div class="flow-step"><b>ANSWER</b></div><div class="flow-step"><b>SUBMIT</b></div><div class="flow-step"><b>RESULT</b></div>
+          </div>
+        </div>
+        <div class="practice-screen">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2em"><div><span class="tag cyan">PRACTICE</span><h3 style="margin:.7em 0 0">Transport Layer</h3></div><div class="timer-ring"><span>02:14</span></div></div>
+          <p style="color:var(--ink);font-size:clamp(13px,1.4cqw,21px)">What does `recv()` return when the peer closes a TCP connection?</p>
+          <div class="choice">A &nbsp; -1</div><div class="choice selected">B &nbsp; 0</div><div class="choice">C &nbsp; NULL</div>
+          <div style="margin:1.1em 0"><div style="display:flex;justify-content:space-between" class="tiny"><span>QUESTION PROGRESS</span><span>7 / 10</span></div><div style="height:7px;margin-top:.5em;border-radius:9px;background:#263b48"><div style="height:100%;width:70%;border-radius:9px;background:var(--cyan)"></div></div></div>
+          <div class="score-card"><span class="score-big">8/10</span><div><strong>Practice complete</strong><p style="margin:.2em 0 0;font-size:clamp(9px,.88cqw,13px)">Illustrative result card · server-calculated</p></div></div>
+        </div>
+      </div>
+      <aside class="notes"><b>Talking point:</b> “Practice Mode reuses the question delivery, answer updates, timer and scoring logic. It skips room membership and gives the learner a result immediately at submission or timeout.”</aside>
+    </section>
+
+    <section class="slide" data-title="Questions and statistics">
+      <div class="topline"><div><div class="eyebrow">06 · Questions & learning history</div><h2>Organize questions.<br><span class="accent">Learn from attempts.</span></h2></div><span class="slide-num">07 / 09</span></div>
+      <div class="content data-layout">
+        <div class="card card-pad">
+          <div style="display:flex;justify-content:space-between;align-items:center"><h3>Question bank filters</h3><span class="sample-stamp">SAMPLE CATALOG</span></div>
+          <div class="topic-list">
+            <div class="topic-row"><span class="topic-mark">N</span><span><strong>Networking</strong><br><span class="tiny">42 questions</span></span><span class="difficulty" aria-label="Medium difficulty"><i class="on"></i><i class="on"></i><i></i></span></div>
+            <div class="topic-row"><span class="topic-mark" style="color:var(--orange);background:#ffb86b1a">T</span><span><strong>Transport</strong><br><span class="tiny">28 questions</span></span><span class="difficulty" aria-label="Hard difficulty"><i class="on"></i><i class="on"></i><i class="on"></i></span></div>
+            <div class="topic-row"><span class="topic-mark" style="color:var(--violet);background:#b6a3ff1a">A</span><span><strong>Application</strong><br><span class="tiny">31 questions</span></span><span class="difficulty" aria-label="Easy difficulty"><i class="on"></i><i></i><i></i></span></div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:.5em;margin-top:1em"><span class="tag">topic</span><span class="tag">difficulty</span><span class="tag">question count</span></div>
+          <p class="tiny" style="margin:.8em 0 0">Example categories and counts only; the question bank is not implemented yet.</p>
+        </div>
+        <div class="card card-pad" style="position:relative">
+          <div style="display:flex;justify-content:space-between;align-items:center"><div><h3 style="margin-bottom:.2em">Recent practice scores</h3><span class="tiny">Correct answers / 10</span></div><span class="sample-stamp">SAMPLE DATA</span></div>
+          <svg class="chart" viewBox="0 0 560 320" role="img" aria-label="Illustrative bar chart of five practice attempt scores out of ten">
+            <line class="chart-grid" x1="68" y1="65" x2="530" y2="65"/><line class="chart-grid" x1="68" y1="105" x2="530" y2="105"/><line class="chart-grid" x1="68" y1="145" x2="530" y2="145"/><line class="chart-grid" x1="68" y1="185" x2="530" y2="185"/><line class="chart-grid" x1="68" y1="225" x2="530" y2="225"/><line class="chart-grid" x1="68" y1="265" x2="530" y2="265"/>
+            <text class="chart-label" x="35" y="69">10</text><text class="chart-label" x="42" y="109">8</text><text class="chart-label" x="42" y="149">6</text><text class="chart-label" x="42" y="189">4</text><text class="chart-label" x="42" y="229">2</text><text class="chart-label" x="42" y="269">0</text>
+            <rect class="chart-bar secondary" x="102" y="165" width="44" height="100" rx="7"/><rect class="chart-bar" x="185" y="145" width="44" height="120" rx="7"/><rect class="chart-bar secondary" x="268" y="185" width="44" height="80" rx="7"/><rect class="chart-bar" x="351" y="125" width="44" height="140" rx="7"/><rect class="chart-bar" x="434" y="105" width="44" height="160" rx="7"/>
+            <text class="chart-value" x="124" y="157" text-anchor="middle">5</text><text class="chart-value" x="207" y="137" text-anchor="middle">6</text><text class="chart-value" x="290" y="177" text-anchor="middle">4</text><text class="chart-value" x="373" y="117" text-anchor="middle">7</text><text class="chart-value" x="456" y="97" text-anchor="middle">8</text>
+            <text class="chart-label" x="124" y="290" text-anchor="middle">#1</text><text class="chart-label" x="207" y="290" text-anchor="middle">#2</text><text class="chart-label" x="290" y="290" text-anchor="middle">#3</text><text class="chart-label" x="373" y="290" text-anchor="middle">#4</text><text class="chart-label" x="456" y="290" text-anchor="middle">#5</text>
+          </svg>
+          <p class="tiny" style="margin:0">Illustrative values only — not collected from users.</p>
+        </div>
+      </div>
+      <aside class="notes"><b>Talking point:</b> “Questions are tagged by topic and difficulty so the server can build a test from the owner's filters. The chart is a mockup with sample values only; there is no real user data yet.”</aside>
+    </section>
+
+    <section class="slide" data-title="Access and correctness">
+      <div class="topline"><div><div class="eyebrow">07 · Access & correctness</div><h2>Rules enforced<br><span class="accent">on the server.</span></h2></div><span class="slide-num">08 / 09</span></div>
+      <div class="content guard-layout">
+        <div class="guard-stack">
+          <article class="card guard-row"><span class="guard-num">01</span><div><strong>Identity</strong><p>Register/login creates a server-validated session.</p></div><span class="tag violet">ACCOUNT</span></article>
+          <article class="card guard-row"><span class="guard-num">02</span><div><strong>Authorization</strong><p>Only the room owner controls settings and start/end.</p></div><span class="tag violet">ROLE</span></article>
+          <article class="card guard-row"><span class="guard-num">03</span><div><strong>Answer window</strong><p>Changes are rejected after submit or the deadline.</p></div><span class="tag orange">TIME</span></article>
+          <article class="card guard-row"><span class="guard-num">04</span><div><strong>Auditability</strong><p>Store attempts, results, and key user actions.</p></div><span class="tag cyan">HISTORY</span></article>
+        </div>
+        <div class="card state-diagram">
+          <span class="tag mint" style="justify-self:center">SERVER ROOM STATE</span>
+          <div class="state-node">NOT_STARTED <span class="tiny">· join allowed</span></div>
+          <div class="state-arrow">OWNER STARTS ↓</div>
+          <div class="state-node active">ONGOING <span class="tiny">· answers open</span></div>
+          <div class="state-arrow">SUBMIT / DEADLINE ↓</div>
+          <div class="state-node">FINISHED <span class="tiny">· score locked</span></div>
+        </div>
+      </div>
+      <aside class="notes"><b>Talking point:</b> “The client is not trusted for roles, time or scores. A room owner can control only their own room; a participant cannot join after start, and answers lock after submit or timeout.”</aside>
+    </section>
+
+    <section class="slide" data-title="Team and progress">
+      <div class="topline"><div><div class="eyebrow">08 · Team & current progress</div><h2>Plan first.<br><span class="accent">Build in slices.</span></h2></div><span class="slide-num">09 / 09</span></div>
+      <div class="content">
+        <div class="team-grid">
+          <article class="card person-card"><div class="avatar">Đ</div><h3>Trần Hữu Đức</h3><span class="student-id">20225963</span><p>C TCP sockets, framing, multi-client handling, room lifecycle and timers.</p></article>
+          <article class="card person-card lead"><div class="avatar">D</div><span class="tag mint" style="margin-bottom:.55em">PROJECT LEAD</span><h3>Trần Anh Dũng</h3><span class="student-id">20226031</span><p>Coordinate scope/architecture, maintain protocol contract, integrate modules and lead demo.</p></article>
+          <article class="card person-card"><div class="avatar" style="color:var(--orange);background:#ffb86b13;border-color:#ffb86b44">P</div><h3>Trần Cao Phong</h3><span class="student-id">20226061</span><p>Accounts, sessions/access control, SQLite persistence and activity logging.</p></article>
+          <article class="card person-card"><div class="avatar" style="color:var(--violet);background:#b6a3ff13;border-color:#b6a3ff44">H</div><h3>Lê Diễm Hằng</h3><span class="student-id">20225970</span><p>Tkinter client, test/practice screens, history/statistics and end-to-end scenarios.</p></article>
+        </div>
+        <div class="progress-caption"><strong>Checkpoint status</strong><span class="tag orange">IMPLEMENTATION NOT STARTED</span></div>
+        <div class="progress-strip">
+          <div class="progress-item done"><b>01 · Setup</b><small>Project repo + Compose environment</small></div>
+          <div class="progress-item done"><b>02 · Design</b><small>Architecture + protocol draft</small></div>
+          <div class="progress-item now"><b>03 · First slice</b><small>TCP framing + request/response</small></div>
+          <div class="progress-item"><b>04 · Full flows</b><small>Accounts, tests, GUI, stats</small></div>
+        </div>
+      </div>
+      <aside class="notes"><b>Closing:</b> “At this checkpoint, we have a separate repository, reproducible Compose environment, and preliminary architecture/protocol. Application features have not been implemented yet. Our first technical milestone is proving the C TCP framing with a minimal client/server round trip.”</aside>
+    </section>
+
+    <button class="notes-toggle" id="notesToggle" type="button" title="Toggle speaker notes (N)">N · Speaker notes</button>
+    <div class="keyboard-hint">← → navigate &nbsp; · &nbsp; N notes &nbsp; · &nbsp; F fullscreen &nbsp; · &nbsp; P print</div>
+    <nav class="controls" aria-label="Slide controls">
+      <button class="control-btn" id="prev" aria-label="Previous slide" title="Previous (←)"><svg viewBox="0 0 20 20" fill="none"><path d="m12 4-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <span id="counter" aria-live="polite">01 / 09</span>
+      <button class="control-btn" id="next" aria-label="Next slide" title="Next (→)"><svg viewBox="0 0 20 20" fill="none"><path d="m8 4 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="control-btn" id="fullscreen" aria-label="Toggle fullscreen" title="Fullscreen (F)"><svg viewBox="0 0 20 20" fill="none"><path d="M7 3H3v4m10-4h4v4M3 13v4h4m10-4v4h-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </nav>
+    <div class="progress-track"><div id="progress"></div></div>
+  </main>
+  <script>
+    (() => {
+      const slides = [...document.querySelectorAll('.slide')];
+      const counter = document.getElementById('counter');
+      const progress = document.getElementById('progress');
+      const previous = document.getElementById('prev');
+      const next = document.getElementById('next');
+      const notesToggle = document.getElementById('notesToggle');
+      let index = 0;
+
+      function showSlide(nextIndex) {
+        index = Math.max(0, Math.min(slides.length - 1, nextIndex));
+        slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+        counter.textContent = `${String(index + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
+        progress.style.width = `${((index + 1) / slides.length) * 100}%`;
+        previous.disabled = index === 0;
+        next.disabled = index === slides.length - 1;
+        document.title = `${slides[index].dataset.title} — Checkpoint 1`;
+      }
+      function toggleNotes() {
+        const notes = slides[index].querySelector('.notes');
+        if (notes) notes.classList.toggle('visible');
+      }
+      previous.addEventListener('click', () => showSlide(index - 1));
+      next.addEventListener('click', () => showSlide(index + 1));
+      notesToggle.addEventListener('click', toggleNotes);
+      document.getElementById('fullscreen').addEventListener('click', async () => {
+        if (!document.fullscreenElement) await document.getElementById('deck').requestFullscreen();
+        else await document.exitFullscreen();
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowRight' || event.key === 'PageDown' || event.key === ' ') showSlide(index + 1);
+        if (event.key === 'ArrowLeft' || event.key === 'PageUp') showSlide(index - 1);
+        if (event.key.toLowerCase() === 'n') toggleNotes();
+        if (event.key.toLowerCase() === 'f') document.getElementById('fullscreen').click();
+        if (event.key.toLowerCase() === 'p') window.print();
+        if (event.key === 'Home') showSlide(0);
+        if (event.key === 'End') showSlide(slides.length - 1);
+      });
+      let touchX = null;
+      document.getElementById('deck').addEventListener('touchstart', (event) => { touchX = event.changedTouches[0].clientX; }, {passive: true});
+      document.getElementById('deck').addEventListener('touchend', (event) => {
+        if (touchX === null) return;
+        const delta = event.changedTouches[0].clientX - touchX;
+        if (Math.abs(delta) > 60) showSlide(index + (delta < 0 ? 1 : -1));
+        touchX = null;
+      }, {passive: true});
+      showSlide(0);
+    })();
+  </script>
+</body>
+</html>

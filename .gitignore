@@ -1,0 +1,9 @@
+build/
+data/
+__pycache__/
+*.py[cod]
+*.db
+*.sqlite
+*.sqlite3
+.venv/
+.env

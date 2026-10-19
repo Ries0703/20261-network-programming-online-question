@@ -7,6 +7,7 @@
 - **Application messages:** newline-delimited JSON over TCP. The C server owns
   stream buffering and handles partial reads/writes.
 - **Persistence:** SQLite, accessed by the C server through its C API.
+- **Password storage:** libsodium Argon2id password hashes.
 - **Development:** a project-local Docker Compose environment. It does not
   change the existing workspace Dev Container.
 
@@ -36,15 +37,17 @@ flowchart LR
    or when time expires.
 7. Store attempts and activity records for history and statistics.
 
-## Initial data model
+## Detailed design documents
 
-- `users`: account name, password hash, creation time.
-- `questions`: prompt, four or more choices, correct choice, difficulty, topic.
-- `rooms`: owner, state, question count, duration, timestamps, filters.
-- `room_members`: room, user, join time, final score.
-- `room_questions`: selected question order for each room/attempt.
-- `answers`: selected choice per participant and question.
-- `practice_attempts`: settings, timestamps, score, and selected questions.
-- `activity_log`: actor, action, target, and timestamp.
+- [Functional design](functional-design.md): all required flows, permissions,
+  lifecycle rules, deadlines, scoring, GUI screens, and failure behavior.
+- [Data model](data-model.md): ERD and table/constraint responsibilities.
+- [SQLite schema](../server/schema.sql): concrete tables, keys, checks, and indexes.
+- [Application protocol](application-protocol.md): command catalogue, response/event
+  envelopes, limits, permissions, errors, and the test sequence.
 
-The schema is preliminary and will be revised after the first server prototype.
+Test Mode and Practice share `tests`, `test_questions`, `attempts`, and `answers`.
+One room has many participants' attempts; one practice test has one attempt.
+The threaded server uses a service mutex for state/write transactions, a deadline
+scheduler, and per-connection send locks. SQLite state is committed before
+acknowledgement; network writes happen outside the service mutex.

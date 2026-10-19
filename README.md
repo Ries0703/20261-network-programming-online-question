@@ -1,14 +1,19 @@
 # Online Multiple-Choice Testing Application
 
 A separate course project for an online testing and practice application. The
-server and application protocol are implemented in C over TCP sockets. The GUI
+server will implement the application protocol in C over TCP sockets. The GUI
 client is planned in Python with Tkinter. This keeps the networking work in C
 while providing a practical desktop interface.
 
 ## Project status
 
-The project environment and initial design documents are being prepared for
-Checkpoint 1. The application features are not implemented yet.
+The project environment and design baseline are prepared for Checkpoint 1.
+Functional flows, ERD, SQLite schema, and protocol contracts are documented.
+The C application handlers and GUI features are not implemented yet.
+
+The delivery scope includes all specified functions: both test modes, accounts
+and access control, topic/difficulty filters, persistent history, graphical
+statistics, activity logging, and the GUI.
 
 ## Development environment
 
@@ -20,7 +25,7 @@ docker compose up -d dev
 docker compose exec dev bash
 ```
 
-The container includes the C toolchain, SQLite and cJSON development packages,
+The container includes the C toolchain, SQLite, cJSON, and libsodium development packages,
 and Python/Tkinter for client development and testing. The client can also run
 on Windows with Python 3 and Tkinter installed; it connects to the server using
 the server host and TCP port. The persistent SQLite data directory inside the
@@ -46,6 +51,12 @@ container is `/var/lib/online-testing-app` (`APP_DATA_DIR`).
 | Lê Diễm Hằng (`20225970`) | Tkinter GUI and client integration, practice/history/statistics screens, and end-to-end test scenarios |
 
 See [`docs/checkpoint-1.md`](docs/checkpoint-1.md) for the presentation outline.
+
+Design references: [functional flows](docs/functional-design.md),
+[ERD/data model](docs/data-model.md), [SQL schema](server/schema.sql), and
+[protocol](docs/application-protocol.md). Run schema validation in the running
+development container with `make schema-check` from the host, or
+`python3 -m unittest discover -s tests -p test_schema.py -v` inside the container.
 
 ## Checkpoint presentation
 

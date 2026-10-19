@@ -11,6 +11,7 @@ RUN apt-get update \
         git \
         libcjson-dev \
         libsqlite3-dev \
+        libsodium-dev \
         make \
         pkg-config \
         python3 \

@@ -4,7 +4,7 @@
 
 **Checkpoint:** Week 7, October 20, 2026 (tentative schedule also lists October 27)
 
-**Presentation limit:** 10 minutes
+**Presentation target:** 15 minutes, following the group's updated presentation slot.
 
 ## 1. Topic and objectives
 
@@ -15,7 +15,7 @@ and a graphical client.
 
 ## 2. Proposed environment and tools
 
-- C (POSIX sockets, pthreads, SQLite C API, cJSON) for the server.
+- C (POSIX sockets, pthreads, SQLite C API, cJSON, libsodium) for the server.
 - Python 3 and Tkinter for the desktop GUI client.
 - TCP with newline-delimited JSON application messages.
 - Docker Compose for a repeatable Linux C server development environment.
@@ -40,7 +40,7 @@ scoring. The GUI renders state received from the server. See
 
 ## 4. Planned functionality
 
-### Core scope
+### Required functionality
 
 - Registration, login, session handling, and access checks.
 - Create a test room, choose question count/duration, and start/end it.
@@ -51,13 +51,9 @@ scoring. The GUI renders state received from the server. See
 - Practice tests with selected count/duration and immediate result.
 - View results for completed rooms and personal attempt history.
 - Record important account, room, and test activity.
-
-### Extension scope if time permits
-
 - Difficulty and topic filters.
 - Graphical score/history statistics.
-- Question import/export and additional validation.
-- Reconnection support and a more detailed activity audit.
+- A graphical user interface for both modes and result/history views.
 
 ## 5. Application-layer protocol
 
@@ -66,8 +62,20 @@ data until a complete line is received and handles partial sends. Messages have
 `type`, `request_id`, and `data`; responses include `ok` and an error code when
 needed. The initial message catalogue includes `REGISTER`, `LOGIN`,
 `ROOM_CREATE`, `ROOM_LIST`, `ROOM_JOIN`, `ROOM_START`, `ANSWER_SET`,
-`TEST_SUBMIT`, `PRACTICE_START`, `HISTORY_GET`, and `STATS_GET`. Details are in
+`ATTEMPT_SUBMIT`, `PRACTICE_START`, `HISTORY_GET`, and `STATS_GET`. Details are in
 [`application-protocol.md`](application-protocol.md).
+
+The full design also specifies connection-bound sessions, answer ownership,
+question pagination, asynchronous server events, error codes, and deadline
+validation. Start/end, submit, and timeout update persistent state transactionally.
+
+### Data model and functional flows
+
+[functional-design.md](functional-design.md) defines all required flows and edge
+cases. [data-model.md](data-model.md) contains the ERD, and
+[server/schema.sql](../server/schema.sql) contains the proposed SQLite tables,
+keys, constraints, and indexes. A shared test definition has one attempt per
+member; Practice Mode uses the same entities with one member.
 
 ## 6. Proposed task allocation
 
@@ -82,23 +90,36 @@ needed. The initial message catalogue includes `REGISTER`, `LOGIN`,
 
 - Created a project directory separate from the existing homework source.
 - Prepared a project-specific Docker Compose development environment.
-- Drafted the system architecture and application-layer protocol.
-- Mapped the requested features to an initial implementation scope.
-- Server, GUI, database schema, and end-to-end behavior have **not yet been
-  implemented**.
+- Documented all required functional flows and the initial GUI screen plan.
+- Designed the ERD, concrete SQLite schema, and application-layer protocol.
+- Added schema checks for key relationships and scoring-query examples.
+- C server handlers, GUI, and end-to-end application behavior are **not yet
+  implemented**. Schema validation is not an end-to-end application test.
 
 ## 8. Next milestones
 
-1. Confirm the group and replace the task-allocation placeholders.
-2. Implement TCP framing and a minimal request/response round trip.
-3. Add account registration/login and persistent question data.
-4. Implement practice mode, then test-room lifecycle and scoring.
-5. Connect the GUI, add history/statistics, and perform multi-client tests.
+1. Implement TCP framing and a minimal request/response round trip.
+2. Implement accounts/sessions and seed the question bank.
+3. Build shared attempt/answer/scoring services and Practice Mode.
+4. Add room membership, owner controls, delivery, and deadline finalization.
+5. Integrate GUI, history/statistics, activity logging, and multi-client tests.
 
-## 9. Point-allocation note
+## 9. Required delivery scope
 
-The proposed core emphasizes stream handling, server socket I/O, accounts,
-sessions/access control, practice mode, and test-room flows. The Tkinter client
-is intended to address the GUI category. Difficulty/topic customization and
-statistics are planned extensions. The grading outcome depends on the final
-implementation and demonstration.
+The delivery scope includes stream handling, server socket I/O, accounts,
+sessions/access control, activity logging, both test modes, difficulty/topic
+customization, persistent test history, graphical statistics, and the Tkinter
+GUI. All specified functions are required deliverables.
+
+## 10. Suggested presentation timing
+
+| Slides | Focus | Time |
+| --- | --- | --- |
+| 1–3 | Topic, full feature scope, tools, and architecture | 3 min |
+| 4–7 | Framing, commands/access, room/practice flow, and message sequence | 4 min |
+| 8–9 | Data model and why tests/attempts are separate | 3 min |
+| 10–11 | Filters/history/statistics, team, progress, and next steps | 3 min |
+| Discussion | Questions and feedback | 2 min |
+
+The main presentation takes about 13 minutes. Each slide keeps only its key
+points; detailed fields, constraints, and edge cases stay in the linked documents.

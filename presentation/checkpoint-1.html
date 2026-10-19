@@ -245,6 +245,138 @@
     .keyboard-hint { position: absolute; left: 50%; bottom: 2.8%; color: #718a95; transform: translateX(-50%); font-size: clamp(8px, .75cqw, 11px); white-space: nowrap; }
     .sample-stamp { display: inline-flex; align-items: center; gap: .5em; padding: .45em .7em; border: 1px solid #ffb86b66; border-radius: 7px; color: var(--orange); background: #ffb86b10; font: 800 clamp(8px, .75cqw, 11px) ui-monospace, monospace; letter-spacing: .08em; }
 
+    /* Plain classroom presentation style */
+    :root {
+      color-scheme: light;
+      --bg: #ffffff;
+      --panel: #f8fafc;
+      --panel-2: #eef2f6;
+      --ink: #17212b;
+      --muted: #475569;
+      --line: #cbd5e1;
+      --mint: #2563eb;
+      --cyan: #0f766e;
+      --orange: #a16207;
+      --pink: #b42318;
+      --violet: #6d28d9;
+    }
+    body { background: #e2e8f0; color: var(--ink); }
+    #deck { background: #fff; box-shadow: 0 2px 14px #0f172a18; }
+    .slide { background-image: none; }
+    .slide.active { animation: none; }
+    .eyebrow { color: #475569; font-size: clamp(10px, .95cqw, 14px); letter-spacing: .08em; }
+    .eyebrow::before { background: #2563eb; }
+    h1 { max-width: 18ch; font-size: clamp(44px, 5.5cqw, 82px); line-height: 1.05; letter-spacing: -.025em; }
+    h2 { font-size: clamp(38px, 4cqw, 60px); line-height: 1.12; letter-spacing: -.02em; }
+    .card { border-radius: 6px; background: #f8fafc; box-shadow: none; }
+    .tag { border-radius: 4px; background: #f1f5f9; color: #334155; font-weight: 600; }
+    .tag.mint, .tag.cyan, .tag.orange, .tag.violet { background: #f1f5f9; }
+    .accent, .cover h1 span { color: #2563eb; }
+    .bullet-list li::before { background: #2563eb; }
+    .cover .title-wrap { max-width: 90%; }
+    .cover .hero-art .orbit { animation: none; }
+    .cover-foot { color: #475569; font-weight: 600; }
+    .mode-card .number { display: none; }
+    .mode-card svg { height: 30%; }
+    .arch-node.server { border-color: #2563eb; box-shadow: none; }
+    .node-icon { background: #eff6ff; }
+    .node-lines span { background: #eef2f6; color: #334155; }
+    .arch-arrow { background: #2563eb; }
+    .arch-arrow::after { border-color: #2563eb; }
+    .arrow-label, .arrow-label.right { color: #475569; }
+    .arch-note { border-color: #cbd5e1; border-radius: 6px; background: #f8fafc; }
+    .code-window { border-color: #cbd5e1; border-radius: 6px; background: #f8fafc; }
+    .window-bar { border-color: #cbd5e1; background: #eef2f6; color: #475569; }
+    .window-dot, .window-dot:nth-child(2), .window-dot:nth-child(3) { background: #94a3b8; }
+    .code-window pre { color: #17212b; }
+    .code-send { color: #1d4ed8; }
+    .code-receive { color: #0f766e; }
+    .code-lf { color: #a16207; font-weight: 700; }
+    .proto-step { border-radius: 6px; background: #f8fafc; box-shadow: none; }
+    .proto-step .step-id { border-radius: 4px; background: #eaf1ff; color: #1d4ed8; }
+    .flow-step { border-radius: 4px; background: #f8fafc; }
+    .flow-chevron { color: #2563eb; }
+    .app-window { border-color: #cbd5e1; border-radius: 6px; background: #fff; box-shadow: none; }
+    .app-top { border-color: #cbd5e1; background: #eef2f6; color: #17212b; }
+    .status-dot.live { color: #0f766e; }
+    .mock-button { border-radius: 4px; background: #2563eb; color: white; }
+    .choice { border-color: #cbd5e1; border-radius: 4px; color: #334155; }
+    .choice.selected { border-color: #2563eb; background: #eff6ff; color: #17212b; }
+    .practice-screen { border-color: #cbd5e1; border-radius: 6px; background: #f8fafc; box-shadow: none; }
+    .timer-ring { border-color: #cbd5e1; border-top-color: #2563eb; border-right-color: #2563eb; color: #17212b; transform: none; }
+    .timer-ring span { transform: none; }
+    .score-card { border-color: #cbd5e1; border-radius: 6px; background: #eff6ff; }
+    .score-big { color: #1d4ed8; }
+    .topic-row { border-color: #dbe2ea; border-radius: 4px; background: #fff; }
+    .topic-mark { border-radius: 4px; background: #eff6ff; }
+    .difficulty i.on { background: #2563eb; }
+    .chart-grid { stroke: #cbd5e1; }
+    .chart-label { fill: #475569; }
+    .chart-bar { fill: #2563eb; }
+    .chart-bar.secondary { fill: #0f766e; }
+    .chart-value { fill: #17212b; }
+    .guard-row { border-radius: 6px; background: #f8fafc; box-shadow: none; }
+    .guard-num { border-radius: 4px; background: #eff6ff; color: #1d4ed8; }
+    .state-diagram { border-radius: 6px; background: #f8fafc; box-shadow: none; }
+    .state-node { border-radius: 4px; background: #fff; }
+    .state-node.active { border-color: #2563eb; background: #eff6ff; }
+    .state-arrow, .notes b { color: #1d4ed8; }
+    .person-card.lead { border-color: #2563eb; background: #eff6ff; }
+    .person-card.lead .avatar { color: #1d4ed8; border-color: #93b4ff; background: #fff; }
+    .avatar { border-color: #93b4ff; border-radius: 50%; color: #1d4ed8; background: #eff6ff; }
+    .person-card .student-id { color: #475569; }
+    .progress-item { background: #f8fafc; }
+    .progress-item.done { border-color: #2563eb; }
+    .progress-item.now { border-color: #a16207; }
+    .control-btn { border-color: #cbd5e1; border-radius: 4px; background: #fff; color: #17212b; }
+    .control-btn:hover { border-color: #2563eb; color: #1d4ed8; }
+    #counter, .slide-num { color: #475569; }
+    .progress-track { background: #e2e8f0; }
+    #progress { background: #2563eb; transition: none; }
+    .notes-toggle { border-color: #cbd5e1; border-radius: 4px; background: #fff; color: #334155; }
+    .notes { border-color: #94a3b8; border-radius: 4px; background: #fff; box-shadow: 0 2px 10px #0f172a20; color: #17212b; }
+    .keyboard-hint { color: #64748b; }
+    .sample-stamp { border-color: #d6a84d; border-radius: 3px; color: #854d0e; background: #fffbeb; }
+    .slide { padding: 5.2% 7% 8%; }
+    p, li { color: #334155; font-size: clamp(22px, 2.25cqw, 36px); line-height: 1.3; }
+    h3 { font-size: clamp(25px, 2.5cqw, 38px); }
+    .subtitle { font-size: clamp(22px, 2.15cqw, 33px); }
+    .tiny { font-size: clamp(16px, 1.4cqw, 22px); }
+    .chart-label { font-size: 16px; }
+    .chart-value { font-size: 17px; }
+    .simple-two-col { display:grid; grid-template-columns:1fr 1fr; gap:3%; height:100%; }
+    .simple-panel { padding:2.8%; border:1px solid #cbd5e1; background:#fff; }
+    .simple-panel h3 { margin-bottom:.65em; color:#1e293b; }
+    .simple-panel ul { display:grid; gap:.55em; margin:.5em 0 0; padding-left:1.1em; }
+    .simple-panel li { padding-left:.1em; }
+    .simple-flow { display:flex; align-items:center; justify-content:center; gap:2%; margin:5% 0; }
+    .simple-node { flex:1; padding:2.5% 1.5%; border:1px solid #94a3b8; background:#f8fafc; text-align:center; }
+    .simple-node b { display:block; color:#1e293b; font-size:clamp(23px,2.15cqw,33px); }
+    .simple-node small { display:block; margin-top:.35em; color:#475569; font-size:clamp(18px,1.6cqw,25px); }
+    .simple-arrow { color:#2563eb; font-size:clamp(22px,2.5cqw,36px); }
+    .plain-code { padding:3%; border:1px solid #cbd5e1; background:#f8fafc; color:#17212b; font:500 clamp(18px,1.55cqw,24px)/1.7 ui-monospace,Consolas,monospace; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .plain-code .code-send { color:#1d4ed8; }
+    .plain-code .code-receive { color:#0f766e; }
+    .plain-code .code-lf { color:#a16207; font-weight:700; }
+    .simple-note { margin-top:2%; padding:1.4% 1.8%; border-left:4px solid #2563eb; background:#f1f5f9; color:#334155; font-size:clamp(20px,1.8cqw,28px); }
+    .simple-table { width:100%; border-collapse:collapse; font-size:clamp(20px,1.85cqw,28px); }
+    .simple-table th,.simple-table td { padding:.55em .65em; border:1px solid #cbd5e1; text-align:left; vertical-align:top; }
+    .simple-table th { background:#f1f5f9; color:#1e293b; }
+    .simple-table td { color:#334155; }
+    .simple-progress { display:flex; gap:1.2%; margin-top:2.5%; }
+    .simple-progress div { flex:1; padding:.8em; border-top:3px solid #2563eb; background:#f8fafc; }
+    .simple-progress div.pending { border-color:#94a3b8; }
+    .simple-progress b { display:block; font-size:clamp(19px,1.65cqw,25px); }
+    .simple-progress span { display:block; margin-top:.3em; color:#475569; font-size:clamp(17px,1.45cqw,22px); }
+    .design-svg { display:block; width:100%; height:27cqw; margin:1.2% auto; }
+    .design-box { fill:#f8fafc; stroke:#94a3b8; stroke-width:1.5; }
+    .design-line { fill:none; stroke:#2563eb; stroke-width:2; }
+    .design-title { fill:#17212b; font:700 25px system-ui,sans-serif; }
+    .design-field { fill:#334155; font:21px ui-monospace,Consolas,monospace; }
+    .design-label { fill:#334155; font:23px system-ui,sans-serif; }
+    .design-sub { fill:#475569; font:20px system-ui,sans-serif; }
+    .message-list { margin:.8em 0; font:500 clamp(18px,1.65cqw,26px)/1.6 ui-monospace,Consolas,monospace; color:#334155; }
+
     @media (max-width: 760px) {
       .slide { padding: 5% 5% 10%; }
       .cover .title-wrap { max-width: 72%; }
@@ -257,9 +389,10 @@
       .person-card { padding: 4%; }
     }
     @media print {
-      html, body { width: 100%; height: auto; overflow: visible; background: white; }
-      #deck { width: 100%; height: auto; overflow: visible; box-shadow: none; }
-      .slide { position: relative; display: flex !important; width: 100%; height: 56.25vw; page-break-after: always; animation: none; }
+      html, body { display: block; width: 100%; height: auto; overflow: visible; background: white; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      #deck { width: 100%; height: auto; aspect-ratio: auto; overflow: visible; box-shadow: none; }
+      .slide { position: relative; display: flex !important; flex-direction: column; width: 100%; height: 7.5in; break-inside: avoid; page-break-after: always; animation: none; }
+      .slide:last-of-type { page-break-after: auto; }
       .controls, .progress-track, .notes-toggle, .notes, .keyboard-hint { display: none !important; }
       @page { size: 13.333in 7.5in; margin: 0; }
     }
@@ -269,246 +402,191 @@
   <main id="deck" aria-label="Checkpoint 1 presentation">
     <section class="slide cover active" data-title="Project overview">
       <div class="title-wrap">
-        <div class="eyebrow">Checkpoint 01 · October 20, 2026</div>
-        <h1>Online<br>Testing<br><span>Application</span></h1>
-        <p class="subtitle">A low-level TCP client/server system for timed tests, practice quizzes, and result tracking.</p>
-        <div class="cover-meta">
-          <span class="tag mint">C / POSIX TCP server</span>
-          <span class="tag cyan">Tkinter GUI client</span>
-          <span class="tag violet">SQLite persistence</span>
-        </div>
+        <div class="eyebrow">Checkpoint 1 · October 20, 2026 · 15 minutes</div>
+        <h1>Online Testing Application</h1>
+        <p class="subtitle">Network Programming project · preliminary design and progress</p>
+        <p><strong>Team:</strong> Trần Hữu Đức · Trần Anh Dũng · Trần Cao Phong · Lê Diễm Hằng</p>
       </div>
-      <svg class="hero-art" viewBox="0 0 560 520" role="img" aria-label="Illustration of clients connected to a central test server">
-        <defs>
-          <linearGradient id="orb" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#72f0c0"/><stop offset="1" stop-color="#65c8f2"/></linearGradient>
-          <filter id="glow"><feGaussianBlur stdDeviation="15" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        </defs>
-        <circle cx="285" cy="255" r="182" fill="none" stroke="#294957" stroke-width="1" stroke-dasharray="4 9"/>
-        <circle class="orbit" cx="285" cy="255" r="220" fill="none" stroke="#65c8f222" stroke-width="1" stroke-dasharray="2 12"/>
-        <path d="M135 170 C190 192 205 216 229 239 M430 154 C385 190 364 214 340 238 M285 356 L285 308" fill="none" stroke="#65c8f2" stroke-width="2" stroke-dasharray="7 8"/>
-        <circle cx="135" cy="170" r="5" fill="#72f0c0" filter="url(#glow)"/><circle cx="430" cy="154" r="5" fill="#65c8f2" filter="url(#glow)"/><circle cx="285" cy="356" r="5" fill="#b6a3ff" filter="url(#glow)"/>
-        <g transform="translate(212 185)"><rect width="146" height="142" rx="30" fill="#122a38" stroke="url(#orb)" stroke-width="2"/><rect x="35" y="34" width="76" height="53" rx="8" fill="#07131f" stroke="#72f0c0"/><path d="M47 49h52M47 61h35M47 73h42" stroke="#65c8f2" stroke-width="4" stroke-linecap="round"/><path d="M53 102h40M73 87v15" stroke="#72f0c0" stroke-width="4" stroke-linecap="round"/><circle cx="121" cy="111" r="5" fill="#72f0c0"/></g>
-        <g transform="translate(70 112)"><rect width="92" height="76" rx="18" fill="#122434" stroke="#65c8f2"/><circle cx="46" cy="27" r="11" fill="#65c8f2"/><path d="M24 59c2-15 42-15 44 0" fill="none" stroke="#65c8f2" stroke-width="6" stroke-linecap="round"/></g>
-        <g transform="translate(387 96)"><rect width="92" height="76" rx="18" fill="#122434" stroke="#72f0c0"/><circle cx="46" cy="27" r="11" fill="#72f0c0"/><path d="M24 59c2-15 42-15 44 0" fill="none" stroke="#72f0c0" stroke-width="6" stroke-linecap="round"/></g>
-        <g transform="translate(239 354)"><rect width="92" height="76" rx="18" fill="#122434" stroke="#b6a3ff"/><circle cx="46" cy="27" r="11" fill="#b6a3ff"/><path d="M24 59c2-15 42-15 44 0" fill="none" stroke="#b6a3ff" stroke-width="6" stroke-linecap="round"/></g>
-        <text x="86" y="222" fill="#9eb2bc" font-size="12" font-family="monospace">ROOM OWNER</text><text x="393" y="204" fill="#9eb2bc" font-size="12" font-family="monospace">PARTICIPANT</text><text x="242" y="452" fill="#9eb2bc" font-size="12" font-family="monospace">PRACTICE USER</text>
-      </svg>
-      <div class="cover-foot">GROUP · 20225963 / 20226031 / 20226061 / 20225970</div>
-      <aside class="notes"><b>Opening:</b> “Our project is an online multiple-choice testing application. We are focusing on a real TCP client/server design in C, with a desktop GUI so both room owners and participants can use it.”</aside>
+      <aside class="notes"><b>Opening:</b> Giới thiệu đề tài thi trắc nghiệm online. Bài nói đi từ phạm vi chức năng đến kiến trúc, protocol, data model, phân công và tiến độ. Trình bày khoảng 13 phút, giữ 2 phút cho câu hỏi.</aside>
     </section>
 
-    <section class="slide" data-title="Objectives and modes">
-      <div class="topline"><div><div class="eyebrow">01 · Product goals</div><h2>Two ways to test.<br><span class="accent">One trusted server.</span></h2></div><span class="slide-num">02 / 09</span></div>
-      <div class="content grid-2">
-        <article class="card mode-card card-pad">
-          <span class="number">01</span><span class="tag mint">TEST MODE</span>
-          <h3>Organized, timed rooms</h3>
-          <p>A user creates a room, chooses the question count and duration, invites participants, and controls when the test starts or ends.</p>
-          <svg viewBox="0 0 430 150" aria-label="Test room lifecycle illustration">
-            <path d="M63 75H350" stroke="#304957" stroke-width="4"/><path d="M80 75H170M214 75H304" stroke="#72f0c0" stroke-width="3" stroke-dasharray="6 7"/>
-            <circle cx="65" cy="75" r="34" fill="#17332f" stroke="#72f0c0" stroke-width="2"/><circle cx="215" cy="75" r="34" fill="#153243" stroke="#65c8f2" stroke-width="2"/><circle cx="365" cy="75" r="34" fill="#26303a" stroke="#9eb2bc" stroke-width="2"/>
-            <text x="65" y="80" fill="#dff9ee" text-anchor="middle" font-size="13" font-family="monospace">READY</text><text x="215" y="80" fill="#e5f6fa" text-anchor="middle" font-size="13" font-family="monospace">LIVE</text><text x="365" y="80" fill="#dbe5e8" text-anchor="middle" font-size="13" font-family="monospace">DONE</text>
-            <text x="65" y="129" fill="#9eb2bc" text-anchor="middle" font-size="11" font-family="monospace">join</text><text x="215" y="129" fill="#9eb2bc" text-anchor="middle" font-size="11" font-family="monospace">answer</text><text x="365" y="129" fill="#9eb2bc" text-anchor="middle" font-size="11" font-family="monospace">score</text>
-          </svg>
-          <div class="mode-points"><span class="tag">early submit</span><span class="tag">change answers</span><span class="tag">server timer</span></div>
-        </article>
-        <article class="card mode-card card-pad">
-          <span class="number">02</span><span class="tag cyan">PRACTICE MODE</span>
-          <h3>Self-paced practice with a limit</h3>
-          <p>A learner picks a question count and time limit. The server scores the attempt and returns the number of correct answers when it ends.</p>
-          <svg viewBox="0 0 430 150" aria-label="Practice test illustration">
-            <rect x="27" y="20" width="376" height="110" rx="17" fill="#0a1722" stroke="#29404e"/>
-            <rect x="48" y="41" width="211" height="14" rx="7" fill="#263b48"/><rect x="48" y="41" width="139" height="14" rx="7" fill="#65c8f2"/>
-            <text x="48" y="83" fill="#eaf4f4" font-size="17" font-family="system-ui">Question 7 of 10</text><text x="48" y="108" fill="#9eb2bc" font-size="12" font-family="monospace">02:14 REMAINING</text>
-            <circle cx="334" cy="73" r="33" fill="#102a38" stroke="#65c8f2" stroke-width="2"/><text x="334" y="80" fill="#65c8f2" text-anchor="middle" font-size="20" font-weight="700" font-family="monospace">7/10</text>
-          </svg>
-          <div class="mode-points"><span class="tag">choose filters</span><span class="tag">instant result</span><span class="tag">history</span></div>
-        </article>
+    <section class="slide" data-title="Requirements and objectives">
+      <div class="topline"><div><div class="eyebrow">01 · Requirements</div><h2>Objectives and main functions</h2></div><span class="slide-num">02 / 07</span></div>
+      <div class="content simple-two-col">
+        <article class="simple-panel"><h3>Test Mode</h3><ul>
+          <li>Create room: question count and duration.</li>
+          <li>View rooms; join before start.</li>
+          <li>Owner starts/ends; users can revise answers.</li>
+          <li>Submit or timeout → score and saved results.</li>
+        </ul></article>
+        <article class="simple-panel"><h3>Practice and shared features</h3><ul>
+          <li>Choose count/time; practice and view score.</li>
+          <li>Register/login and room permissions.</li>
+          <li>Filter questions by topic and difficulty.</li>
+          <li>GUI, attempt history, and score charts.</li>
+        </ul></article>
       </div>
-      <aside class="notes"><b>Talking point:</b> “Test Mode is for a room owner and a group of participants. Practice Mode uses the same question and scoring foundations, but does not need a room or other participants.”</aside>
+      <aside class="notes"><b>Talking point:</b> Có hai chế độ: phòng thi nhiều người và tự luyện tập. Cả hai cùng dùng tài khoản, lọc câu hỏi, lưu bài làm và biểu đồ thống kê. Tất cả là chức năng trong phạm vi bắt buộc.</aside>
     </section>
 
-    <section class="slide" data-title="Architecture">
-      <div class="topline"><div><div class="eyebrow">02 · Proposed system</div><h2>Direct TCP.<br><span class="accent">Server-authoritative.</span></h2></div><span class="slide-num">03 / 09</span></div>
+    <section class="slide" data-title="Environment and architecture">
+      <div class="topline"><div><div class="eyebrow">02 · Development environment</div><h2>Tools and system architecture</h2></div><span class="slide-num">03 / 07</span></div>
       <div class="content">
-        <div class="architecture">
-          <article class="card arch-node card-pad">
-            <div class="node-head"><div class="node-icon"><svg viewBox="0 0 40 40" fill="none"><rect x="5" y="6" width="30" height="20" rx="3" stroke="currentColor" stroke-width="2"/><path d="M12 33h16M20 26v7M10 12h20M10 17h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div><div><span class="tag cyan">CLIENT</span><h3 style="margin:.45em 0 0">Python · Tkinter</h3></div></div>
-            <div class="node-lines"><span>login / register</span><span>room & quiz screens</span><span>history & charts</span></div>
-          </article>
-          <article class="card arch-node server card-pad">
-            <div class="node-head"><div class="node-icon" style="color:var(--mint);background:#72f0c018"><svg viewBox="0 0 40 40" fill="none"><rect x="7" y="5" width="26" height="30" rx="5" stroke="currentColor" stroke-width="2"/><path d="M12 12h16M12 18h16M12 24h9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="27" cy="27" r="2" fill="currentColor"/></svg></div><div><span class="tag mint">CORE</span><h3 style="margin:.45em 0 0">C · POSIX sockets</h3></div></div>
-            <div class="node-lines"><span>auth & access</span><span>rooms & deadlines</span><span>answers & scoring</span></div>
-          </article>
-          <article class="card arch-node storage card-pad">
-            <div class="node-head"><div class="node-icon" style="color:var(--violet);background:#b6a3ff18"><svg viewBox="0 0 40 40" fill="none"><ellipse cx="20" cy="9" rx="13" ry="5" stroke="currentColor" stroke-width="2"/><path d="M7 9v21c0 3 6 5 13 5s13-2 13-5V9M7 19c0 3 6 5 13 5s13-2 13-5M7 29c0 3 6 5 13 5s13-2 13-5" stroke="currentColor" stroke-width="2"/></svg></div><div><span class="tag violet">PERSISTENCE</span><h3 style="margin:.45em 0 0">SQLite</h3></div></div>
-            <div class="node-lines"><span>users / questions</span><span>rooms / attempts</span><span>activity log</span></div>
-          </article>
-          <div class="arch-arrow left"></div><div class="arrow-label left">TCP · JSONL</div>
-          <div class="arch-arrow right"></div><div class="arrow-label right">C API</div>
+        <div class="simple-flow" aria-label="Client to server to database">
+          <div class="simple-node"><b>GUI Client</b><small>Python · Tkinter</small></div><span class="simple-arrow">→</span>
+          <div class="simple-node"><b>C Server</b><small>POSIX TCP sockets</small></div><span class="simple-arrow">→</span>
+          <div class="simple-node"><b>Database</b><small>SQLite</small></div>
         </div>
-        <div class="arch-note"><span class="tag mint">TRUST BOUNDARY</span><p style="margin:0">The server owns deadlines, permissions, answer state, and scoring. Clients display data and send actions; they do not decide the result.</p></div>
+        <div class="simple-note"><strong>Tools:</strong> GCC, pthreads, cJSON, SQLite, libsodium, Make, Docker Compose.</div>
+        <p style="margin-top:2%">TCP + JSON Lines between client and server. The server manages sessions, rooms, deadlines, and scoring.</p>
       </div>
-      <aside class="notes"><b>Talking point:</b> “We keep the network programming in the C server. The GUI connects directly over TCP, so we do not need an HTTP or WebSocket gateway. SQLite is local to the server process in the first version.”</aside>
+      <aside class="notes"><b>Talking point:</b> Server dùng C/POSIX sockets giống homework; client dùng Python/Tkinter và TCP trực tiếp. SQLite lưu dữ liệu; libsodium hash password. Compose chuẩn hóa môi trường build Linux. Pthread phục vụ connection, scheduler xử lý deadline, mutex bảo vệ state và từng socket send.</aside>
     </section>
 
     <section class="slide" data-title="Application protocol">
-      <div class="topline"><div><div class="eyebrow">03 · Application-layer protocol</div><h2>One JSON message<br><span class="accent">per TCP line.</span></h2></div><span class="slide-num">04 / 09</span></div>
-      <div class="content protocol-layout">
-        <div class="code-window">
-          <div class="window-bar"><i class="window-dot"></i><i class="window-dot"></i><i class="window-dot"></i><span style="margin-left:.7em">JSONL · TCP stream · UTF-8 · LF 0x0A</span></div>
-          <pre><span style="color:#72f0c0">→ client request</span>
-{"type":"ANSWER_SET","request_id":42,"data":{"question_id":8,"choice":"B"}}<span style="color:#ffb86b;font-weight:800">\n</span>
+      <div class="topline"><div><div class="eyebrow">03 · Communication design</div><h2>Application-layer protocol</h2></div><span class="slide-num">04 / 07</span></div>
+      <div class="content">
+        <p>TCP + UTF-8 JSON Lines. <code>\n</code> denotes the LF byte <code>0x0A</code>.</p>
+        <pre class="plain-code"><span class="code-send">Client → Server</span>
+{"type":"ATTEMPT_SUBMIT","request_id":42,"data":{"attempt_id":11}}<span class="code-lf">\n</span>
 
-<span style="color:#65c8f2">← server response</span>
-{"type":"RESPONSE","request_id":42,"ok":true,"data":{"saved":true}}<span style="color:#ffb86b;font-weight:800">\n</span>
-
-<span style="color:#ffb86b">\n is the visible notation for one LF byte (0x0A).</span></pre>
-        </div>
-        <div class="proto-lines">
-          <article class="card proto-step"><span class="step-id">01</span><div><strong>Frame the byte stream</strong><p>Buffer partial reads until `\n`; split multiple messages from one read.</p></div></article>
-          <article class="card proto-step"><span class="step-id">02</span><div><strong>Correlate requests</strong><p>`request_id` matches a response to its request; errors return stable codes.</p></div></article>
-          <article class="card proto-step"><span class="step-id">03</span><div><strong>Protect scoring</strong><p>Question delivery omits the correct choice. Only the server calculates scores.</p></div></article>
-          <article class="card proto-step"><span class="step-id">04</span><div><strong>Handle stream I/O</strong><p>Use receive buffering and `send_all()` for partial reads and writes.</p></div></article>
-        </div>
+<span class="code-receive">Server → Client (event)</span>
+{"type":"EVENT","event":"TEST_FINISHED","data":{"test_id":41,"reason":"TIMEOUT"}}<span class="code-lf">\n</span></pre>
+        <div class="simple-note">Buffer reads until LF; use <code>send_all()</code> for partial writes. Only the server validates and scores answers.</div>
       </div>
-      <aside class="notes"><b>Talking point:</b> “TCP has no message boundaries. We chose JSON Lines because it is easy to inspect during development. The server must still handle data split across reads or several JSON messages arriving together.”</aside>
+      <aside class="notes"><b>Talking point:</b> TCP là byte stream nên phải tự buffer đến LF. Request dùng request_id để khớp RESPONSE; EVENT là thông báo chủ động từ server, ví dụ hết giờ. Hai dòng trên minh họa hai loại message độc lập, không phải event là response trực tiếp cho request ở trên. Frame tối đa 64 KiB; câu hỏi được lấy theo trang tối đa 5 câu.</aside>
     </section>
 
-    <section class="slide" data-title="Test mode">
-      <div class="topline"><div><div class="eyebrow">04 · Test Mode</div><h2>Room control +<br><span class="accent">fair timing.</span></h2></div><span class="slide-num">05 / 09</span></div>
-      <div class="content test-layout">
-        <div>
-          <div class="flow" aria-label="Test lifecycle">
-            <div class="flow-step"><b>NOT STARTED</b><small>create · join</small></div><span class="flow-chevron">›</span>
-            <div class="flow-step" style="border-color:#65c8f288"><b>ONGOING</b><small>answer · submit</small></div><span class="flow-chevron">›</span>
-            <div class="flow-step"><b>FINISHED</b><small>score · review</small></div>
-          </div>
-          <ul class="bullet-list">
-            <li><span>Owner sets question count and duration; starts/ends the room.</span></li>
-            <li><span>Participants can join only before the room starts.</span></li>
-            <li><span>Answers can be changed until early submit or server deadline.</span></li>
-            <li><span>On timeout, the server scores and notifies every participant.</span></li>
-          </ul>
-        </div>
-        <div class="app-window">
-          <div class="app-top"><span><span class="sample-stamp" style="margin-right:.65em">ILLUSTRATIVE UI</span>ROOM 041 · Networking Basics</span><span class="status-dot live">ONGOING</span></div>
-          <div class="app-body">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1em"><span class="tag orange">TIME LEFT · 08:42</span><span class="tiny">Question 3 / 10</span></div>
-            <div class="question-mock">
-              <div><strong style="font-size:clamp(10px,1.1cqw,16px)">Which call accepts a TCP connection?</strong>
-                <div class="choice">A &nbsp; connect()</div><div class="choice selected">B &nbsp; accept()</div><div class="choice">C &nbsp; listen()</div><div class="choice">D &nbsp; bind()</div>
-              </div>
-              <div class="timer-ring"><span>08:42</span></div>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.2em"><span class="tiny">Answer saved · can be changed</span><button class="mock-button">Submit early</button></div>
-          </div>
-        </div>
+    <section class="slide" data-title="Protocol commands and access">
+      <div class="topline"><div><div class="eyebrow">Protocol contracts</div><h2>Commands and access rules</h2></div><span class="slide-num"></span></div>
+      <div class="content simple-two-col">
+        <div><h3>Accounts and rooms</h3><p class="message-list">REGISTER · LOGIN<br>ROOM_CREATE · ROOM_LIST<br>ROOM_JOIN · ROOM_START<br>ROOM_END</p><p>Login binds identity to the connection. Only the owner starts/ends a room.</p></div>
+        <div><h3>Attempts and results</h3><p class="message-list">QUESTIONS_GET · ANSWER_SET<br>ATTEMPT_SUBMIT<br>ROOM_RESULTS_GET<br>HISTORY_GET · STATS_GET</p><p>Only your own attempt accepts answers. Responses carry data or a stable error code.</p></div>
       </div>
-      <aside class="notes"><b>Talking point:</b> “The room state changes only on the server. The timer is also server-side, so changing the client clock cannot extend a test. Participants may revise answers while the room is open.”</aside>
+      <aside class="notes"><b>Talking point:</b> Protocol có contract đầy đủ trong tài liệu: field, response, permission và lỗi cho từng lệnh. Login lưu session phía server; không tin user_id do client gửi. ANSWER_SET bắt buộc attempt_id, question_id, choice_key. Password hash dùng libsodium; đường truyền TCP hiện chưa mã hóa.</aside>
     </section>
 
-    <section class="slide" data-title="Practice mode">
-      <div class="topline"><div><div class="eyebrow">05 · Practice Mode</div><h2>Short feedback loop.<br><span class="accent">Immediate score.</span></h2></div><span class="slide-num">06 / 09</span></div>
-      <div class="content practice-layout">
-        <div>
-          <span class="tag cyan">PRACTICE SESSION · ILLUSTRATIVE UI</span>
-          <h3 style="margin-top:1em">A learner controls the session settings</h3>
-          <ul class="bullet-list">
-            <li><span>Choose the number of questions and a time limit.</span></li>
-            <li><span>Filter by topic or difficulty when that feature is enabled.</span></li>
-            <li><span>Review the number of correct answers at completion.</span></li>
-            <li><span>Save the attempt for later history and statistics.</span></li>
-          </ul>
-          <div class="practice-flow">
-            <div class="flow-step active"><b>SETUP</b></div><div class="flow-step"><b>ANSWER</b></div><div class="flow-step"><b>SUBMIT</b></div><div class="flow-step"><b>RESULT</b></div>
-          </div>
+    <section class="slide" data-title="Test and practice workflows">
+      <div class="topline"><div><div class="eyebrow">04 · System design</div><h2>Test and practice workflows</h2></div><span class="slide-num">05 / 07</span></div>
+      <div class="content">
+        <h3>Test room lifecycle</h3>
+        <div class="simple-flow">
+          <div class="simple-node"><b>NOT STARTED</b><small>Create · join</small></div><span class="simple-arrow">→</span>
+          <div class="simple-node"><b>ONGOING</b><small>Answer · revise · submit</small></div><span class="simple-arrow">→</span>
+          <div class="simple-node"><b>FINISHED</b><small>Score · results</small></div>
         </div>
-        <div class="practice-screen">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2em"><div><span class="tag cyan">PRACTICE</span><h3 style="margin:.7em 0 0">Transport Layer</h3></div><div class="timer-ring"><span>02:14</span></div></div>
-          <p style="color:var(--ink);font-size:clamp(13px,1.4cqw,21px)">What does `recv()` return when the peer closes a TCP connection?</p>
-          <div class="choice">A &nbsp; -1</div><div class="choice selected">B &nbsp; 0</div><div class="choice">C &nbsp; NULL</div>
-          <div style="margin:1.1em 0"><div style="display:flex;justify-content:space-between" class="tiny"><span>QUESTION PROGRESS</span><span>7 / 10</span></div><div style="height:7px;margin-top:.5em;border-radius:9px;background:#263b48"><div style="height:100%;width:70%;border-radius:9px;background:var(--cyan)"></div></div></div>
-          <div class="score-card"><span class="score-big">8/10</span><div><strong>Practice complete</strong><p style="margin:.2em 0 0;font-size:clamp(9px,.88cqw,13px)">Illustrative result card · server-calculated</p></div></div>
+        <div class="simple-two-col" style="height:auto;margin-top:3%">
+          <div><h3>Test Mode</h3><p>Owner controls start/end. Join before start. Server enforces the deadline.</p></div>
+          <div><h3>Practice Mode</h3><p>Choose count/time → answer → submit or timeout → score.</p></div>
         </div>
       </div>
-      <aside class="notes"><b>Talking point:</b> “Practice Mode reuses the question delivery, answer updates, timer and scoring logic. It skips room membership and gives the learner a result immediately at submission or timeout.”</aside>
+      <aside class="notes"><b>Talking point:</b> Owner tự tham gia phòng, chọn count/duration/filters; chỉ join trước start. Khi start, server cố định bộ câu hỏi và tạo attempt cho từng thành viên. Nộp sớm chỉ final attempt của người đó. Owner-end hoặc deadline final các bài còn lại. Nếu mọi người đã nộp thì phòng kết thúc sớm. Practice dùng cùng cơ chế với một người.</aside>
+    </section>
+
+    <section class="slide" data-title="Test message sequence">
+      <div class="topline"><div><div class="eyebrow">Protocol in operation</div><h2>Test message sequence</h2></div><span class="slide-num"></span></div>
+      <div class="content">
+        <svg class="design-svg" viewBox="0 0 1000 365" role="img" aria-label="Selected messages between GUI, C server and SQLite during a test">
+          <defs><marker id="seq-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="#2563eb"/></marker></defs>
+          <text class="design-title" x="140" y="30" text-anchor="middle">GUI client</text><text class="design-title" x="510" y="30" text-anchor="middle">C server</text><text class="design-title" x="860" y="30" text-anchor="middle">SQLite</text>
+          <path d="M140 45V355M510 45V355M860 45V355" stroke="#cbd5e1" stroke-dasharray="5 5"/>
+          <path class="design-line" d="M140 80H510" marker-end="url(#seq-arrow)"/><text class="design-label" x="175" y="70">ROOM_START (owner)</text>
+          <path class="design-line" d="M510 125H860" marker-end="url(#seq-arrow)"/><text class="design-label" x="535" y="115">Questions + attempts</text>
+          <path class="design-line" d="M510 170H140" marker-end="url(#seq-arrow)"/><text class="design-label" x="175" y="160">TEST_STARTED + question pages</text>
+          <path class="design-line" d="M140 210H510" marker-end="url(#seq-arrow)"/><text class="design-label" x="175" y="200">ANSWER_SET</text>
+          <path class="design-line" d="M510 240H140" marker-end="url(#seq-arrow)"/><text class="design-sub" x="175" y="230">ACK after answer commit</text>
+          <path class="design-line" d="M140 285H510" marker-end="url(#seq-arrow)"/><text class="design-label" x="175" y="280">ATTEMPT_SUBMIT</text>
+          <path class="design-line" d="M510 320H860" marker-end="url(#seq-arrow)"/><text class="design-label" x="535" y="315">Score + finalize</text>
+          <path class="design-line" d="M510 350H140" marker-end="url(#seq-arrow)"/><text class="design-label" x="175" y="340">Final result</text>
+        </svg>
+        <p>Timeout and owner-end use the same finalization path. Saved answers are committed before acknowledgement.</p>
+      </div>
+      <aside class="notes"><b>Talking point:</b> Đây là sequence rút gọn; trang câu hỏi được client yêu cầu bằng QUESTIONS_GET, hình gộp phần lấy/trả trang để dễ chiếu. ACK của ANSWER_SET được gửi ngược lại sau commit. Nộp sớm chỉ final bài của một người; deadline hoặc owner-end final những bài còn lại. Sequence đầy đủ có trong application-protocol.md.</aside>
+    </section>
+
+    <section class="slide" data-title="Accounts and question data">
+      <div class="topline"><div><div class="eyebrow">Data model · 1 of 2</div><h2>Accounts and question bank</h2></div><span class="slide-num"></span></div>
+      <div class="content">
+        <svg class="design-svg" viewBox="0 0 1000 365" role="img" aria-label="One user has many sessions; one topic has many questions; each question has four choices">
+          <rect class="design-box" x="20" y="15" width="430" height="115"/><text class="design-title" x="40" y="48">users</text><text class="design-field" x="40" y="80">id · username</text><text class="design-field" x="40" y="110">password_hash</text>
+          <rect class="design-box" x="550" y="15" width="430" height="115"/><text class="design-title" x="570" y="48">sessions</text><text class="design-field" x="570" y="80">user_id · expires_at</text><text class="design-field" x="570" y="110">ended_at · end_reason</text>
+          <path class="design-line" d="M450 72H550"/><text class="design-sub" x="468" y="59">1 : N</text>
+          <rect class="design-box" x="20" y="220" width="230" height="115"/><text class="design-title" x="40" y="253">topics</text><text class="design-field" x="40" y="288">id · name</text>
+          <rect class="design-box" x="350" y="220" width="310" height="115"/><text class="design-title" x="370" y="253">questions</text><text class="design-field" x="370" y="285">id · topic_id</text><text class="design-field" x="370" y="315">difficulty · prompt</text>
+          <rect class="design-box" x="730" y="220" width="250" height="115"/><text class="design-title" x="750" y="253">question_choices</text><text class="design-field" x="750" y="285">question_id</text><text class="design-field" x="750" y="315">choice_key · text</text>
+          <path class="design-line" d="M250 277H350M660 277H730"/><text class="design-sub" x="270" y="264">1 : N</text><text class="design-sub" x="670" y="264">1 : 4</text>
+        </svg>
+        <p>Four choices, one correct key. Used questions stay immutable so stored results remain valid.</p>
+      </div>
+      <aside class="notes"><b>Talking point:</b> ERD đầy đủ và các field/constraint có trong data-model.md và schema.sql. Username unique không phân biệt hoa thường. Mỗi TCP connection đăng nhập có session, chỉ một session đang mở trên một user. Câu hỏi có topic, difficulty và đáp án đúng tham chiếu một lựa chọn; server kiểm tra đúng bốn lựa chọn khi nạp bank.</aside>
+    </section>
+
+    <section class="slide" data-title="Tests attempts and answers">
+      <div class="topline"><div><div class="eyebrow">Data model · 2 of 2</div><h2>Shared test, individual attempts</h2></div><span class="slide-num"></span></div>
+      <div class="content">
+        <svg class="design-svg" viewBox="0 0 1000 365" role="img" aria-label="A test has members and selected questions; each member has one attempt; answers belong to an attempt and a selected test question">
+          <rect class="design-box" x="20" y="15" width="250" height="110"/><text class="design-title" x="40" y="48">tests</text><text class="design-field" x="40" y="80">id · mode · status</text><text class="design-field" x="40" y="110">deadline_at</text>
+          <rect class="design-box" x="390" y="15" width="230" height="110"/><text class="design-title" x="410" y="48">test_members</text><text class="design-field" x="410" y="80">test_id · user_id</text>
+          <rect class="design-box" x="750" y="15" width="230" height="110"/><text class="design-title" x="770" y="48">attempts</text><text class="design-field" x="770" y="80">status</text><text class="design-field" x="770" y="110">correct_count</text>
+          <path class="design-line" d="M270 70H390M620 70H750"/><text class="design-sub" x="310" y="58">1 : N</text><text class="design-sub" x="650" y="58">1 : 0..1</text>
+          <rect class="design-box" x="20" y="235" width="310" height="110"/><text class="design-title" x="40" y="268">test_questions</text><text class="design-field" x="40" y="300">test_id · question_id</text><text class="design-field" x="40" y="330">ordinal</text>
+          <rect class="design-box" x="750" y="220" width="230" height="135"/><text class="design-title" x="770" y="250">answers</text><text class="design-field" x="770" y="280">attempt_id</text><text class="design-field" x="770" y="305">question_id</text><text class="design-field" x="770" y="330">choice_key</text>
+          <path class="design-line" d="M145 125V235M865 125V220M330 290H750"/><text class="design-sub" x="155" y="185">1 : N</text><text class="design-sub" x="875" y="180">1 : N</text><text class="design-sub" x="400" y="278">Only questions selected for this test</text>
+        </svg>
+        <p>Room = many attempts. Practice = one attempt. Topic/difficulty filter tables and activity logs complete the schema.</p>
+      </div>
+      <aside class="notes"><b>Talking point:</b> Tests giữ settings và bộ câu hỏi chung; attempts giữ bài làm cá nhân. Test_members có thể chưa có attempt khi room chưa start. Composite foreign key buộc answers thuộc đúng attempt/test và câu hỏi. Nộp sớm không kết thúc bài của người khác. Cùng mô hình phục vụ practice, tránh hai bộ logic chấm điểm khác nhau.</aside>
     </section>
 
     <section class="slide" data-title="Questions and statistics">
-      <div class="topline"><div><div class="eyebrow">06 · Questions & learning history</div><h2>Organize questions.<br><span class="accent">Learn from attempts.</span></h2></div><span class="slide-num">07 / 09</span></div>
-      <div class="content data-layout">
-        <div class="card card-pad">
-          <div style="display:flex;justify-content:space-between;align-items:center"><h3>Question bank filters</h3><span class="sample-stamp">SAMPLE CATALOG</span></div>
-          <div class="topic-list">
-            <div class="topic-row"><span class="topic-mark">N</span><span><strong>Networking</strong><br><span class="tiny">42 questions</span></span><span class="difficulty" aria-label="Medium difficulty"><i class="on"></i><i class="on"></i><i></i></span></div>
-            <div class="topic-row"><span class="topic-mark" style="color:var(--orange);background:#ffb86b1a">T</span><span><strong>Transport</strong><br><span class="tiny">28 questions</span></span><span class="difficulty" aria-label="Hard difficulty"><i class="on"></i><i class="on"></i><i class="on"></i></span></div>
-            <div class="topic-row"><span class="topic-mark" style="color:var(--violet);background:#b6a3ff1a">A</span><span><strong>Application</strong><br><span class="tiny">31 questions</span></span><span class="difficulty" aria-label="Easy difficulty"><i class="on"></i><i></i><i></i></span></div>
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:.5em;margin-top:1em"><span class="tag">topic</span><span class="tag">difficulty</span><span class="tag">question count</span></div>
-          <p class="tiny" style="margin:.8em 0 0">Example categories and counts only; the question bank is not implemented yet.</p>
+      <div class="topline"><div><div class="eyebrow">05 · Question bank and history</div><h2>Question filters and statistics</h2></div><span class="slide-num">06 / 07</span></div>
+      <div class="content simple-two-col">
+        <div>
+          <h3>Question bank</h3>
+          <p>Filter by topic and difficulty; choose question count.</p>
+          <p><strong>Store:</strong> questions, attempts, answers, scores, and activity logs.</p>
+          <p class="tiny">The chart uses sample values only; no real user results exist yet.</p>
         </div>
-        <div class="card card-pad" style="position:relative">
-          <div style="display:flex;justify-content:space-between;align-items:center"><div><h3 style="margin-bottom:.2em">Recent practice scores</h3><span class="tiny">Correct answers / 10</span></div><span class="sample-stamp">SAMPLE DATA</span></div>
-          <svg class="chart" viewBox="0 0 560 320" role="img" aria-label="Illustrative bar chart of five practice attempt scores out of ten">
+        <div class="simple-panel" style="display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:space-between;align-items:center"><h3>Practice scores / 10</h3><span class="sample-stamp">SAMPLE</span></div>
+          <svg class="chart" style="height:100%;flex:1" viewBox="0 0 560 320" role="img" aria-label="Sample chart showing practice scores 5, 6, 4, 7, and 8 out of 10">
             <line class="chart-grid" x1="68" y1="65" x2="530" y2="65"/><line class="chart-grid" x1="68" y1="105" x2="530" y2="105"/><line class="chart-grid" x1="68" y1="145" x2="530" y2="145"/><line class="chart-grid" x1="68" y1="185" x2="530" y2="185"/><line class="chart-grid" x1="68" y1="225" x2="530" y2="225"/><line class="chart-grid" x1="68" y1="265" x2="530" y2="265"/>
             <text class="chart-label" x="35" y="69">10</text><text class="chart-label" x="42" y="109">8</text><text class="chart-label" x="42" y="149">6</text><text class="chart-label" x="42" y="189">4</text><text class="chart-label" x="42" y="229">2</text><text class="chart-label" x="42" y="269">0</text>
-            <rect class="chart-bar secondary" x="102" y="165" width="44" height="100" rx="7"/><rect class="chart-bar" x="185" y="145" width="44" height="120" rx="7"/><rect class="chart-bar secondary" x="268" y="185" width="44" height="80" rx="7"/><rect class="chart-bar" x="351" y="125" width="44" height="140" rx="7"/><rect class="chart-bar" x="434" y="105" width="44" height="160" rx="7"/>
+            <rect class="chart-bar secondary" x="102" y="165" width="44" height="100"/><rect class="chart-bar" x="185" y="145" width="44" height="120"/><rect class="chart-bar secondary" x="268" y="185" width="44" height="80"/><rect class="chart-bar" x="351" y="125" width="44" height="140"/><rect class="chart-bar" x="434" y="105" width="44" height="160"/>
             <text class="chart-value" x="124" y="157" text-anchor="middle">5</text><text class="chart-value" x="207" y="137" text-anchor="middle">6</text><text class="chart-value" x="290" y="177" text-anchor="middle">4</text><text class="chart-value" x="373" y="117" text-anchor="middle">7</text><text class="chart-value" x="456" y="97" text-anchor="middle">8</text>
-            <text class="chart-label" x="124" y="290" text-anchor="middle">#1</text><text class="chart-label" x="207" y="290" text-anchor="middle">#2</text><text class="chart-label" x="290" y="290" text-anchor="middle">#3</text><text class="chart-label" x="373" y="290" text-anchor="middle">#4</text><text class="chart-label" x="456" y="290" text-anchor="middle">#5</text>
+            <text class="chart-label" x="124" y="290" text-anchor="middle">1</text><text class="chart-label" x="207" y="290" text-anchor="middle">2</text><text class="chart-label" x="290" y="290" text-anchor="middle">3</text><text class="chart-label" x="373" y="290" text-anchor="middle">4</text><text class="chart-label" x="456" y="290" text-anchor="middle">5</text>
           </svg>
-          <p class="tiny" style="margin:0">Illustrative values only — not collected from users.</p>
         </div>
       </div>
-      <aside class="notes"><b>Talking point:</b> “Questions are tagged by topic and difficulty so the server can build a test from the owner's filters. The chart is a mockup with sample values only; there is no real user data yet.”</aside>
-    </section>
-
-    <section class="slide" data-title="Access and correctness">
-      <div class="topline"><div><div class="eyebrow">07 · Access & correctness</div><h2>Rules enforced<br><span class="accent">on the server.</span></h2></div><span class="slide-num">08 / 09</span></div>
-      <div class="content guard-layout">
-        <div class="guard-stack">
-          <article class="card guard-row"><span class="guard-num">01</span><div><strong>Identity</strong><p>Register/login creates a server-validated session.</p></div><span class="tag violet">ACCOUNT</span></article>
-          <article class="card guard-row"><span class="guard-num">02</span><div><strong>Authorization</strong><p>Only the room owner controls settings and start/end.</p></div><span class="tag violet">ROLE</span></article>
-          <article class="card guard-row"><span class="guard-num">03</span><div><strong>Answer window</strong><p>Changes are rejected after submit or the deadline.</p></div><span class="tag orange">TIME</span></article>
-          <article class="card guard-row"><span class="guard-num">04</span><div><strong>Auditability</strong><p>Store attempts, results, and key user actions.</p></div><span class="tag cyan">HISTORY</span></article>
-        </div>
-        <div class="card state-diagram">
-          <span class="tag mint" style="justify-self:center">SERVER ROOM STATE</span>
-          <div class="state-node">NOT_STARTED <span class="tiny">· join allowed</span></div>
-          <div class="state-arrow">OWNER STARTS ↓</div>
-          <div class="state-node active">ONGOING <span class="tiny">· answers open</span></div>
-          <div class="state-arrow">SUBMIT / DEADLINE ↓</div>
-          <div class="state-node">FINISHED <span class="tiny">· score locked</span></div>
-        </div>
-      </div>
-      <aside class="notes"><b>Talking point:</b> “The client is not trusted for roles, time or scores. A room owner can control only their own room; a participant cannot join after start, and answers lock after submit or timeout.”</aside>
+      <aside class="notes"><b>Talking point:</b> Topic/difficulty, history và graphical statistics đều bắt buộc. Biểu đồ dùng dữ liệu giả 5/10, 6/10, 4/10, 7/10, 8/10. Khi số câu khác nhau, dùng tỷ lệ phần trăm. Overall accuracy tính tổng đúng chia tổng số câu, không lấy trung bình raw score. Chỉ tính bài đã final; câu bỏ trống tính sai.</aside>
     </section>
 
     <section class="slide" data-title="Team and progress">
-      <div class="topline"><div><div class="eyebrow">08 · Team & current progress</div><h2>Plan first.<br><span class="accent">Build in slices.</span></h2></div><span class="slide-num">09 / 09</span></div>
+      <div class="topline"><div><div class="eyebrow">06 · Team and progress</div><h2>Task allocation and current status</h2></div><span class="slide-num">07 / 07</span></div>
       <div class="content">
-        <div class="team-grid">
-          <article class="card person-card"><div class="avatar">Đ</div><h3>Trần Hữu Đức</h3><span class="student-id">20225963</span><p>C TCP sockets, framing, multi-client handling, room lifecycle and timers.</p></article>
-          <article class="card person-card lead"><div class="avatar">D</div><span class="tag mint" style="margin-bottom:.55em">PROJECT LEAD</span><h3>Trần Anh Dũng</h3><span class="student-id">20226031</span><p>Coordinate scope/architecture, maintain protocol contract, integrate modules and lead demo.</p></article>
-          <article class="card person-card"><div class="avatar" style="color:var(--orange);background:#ffb86b13;border-color:#ffb86b44">P</div><h3>Trần Cao Phong</h3><span class="student-id">20226061</span><p>Accounts, sessions/access control, SQLite persistence and activity logging.</p></article>
-          <article class="card person-card"><div class="avatar" style="color:var(--violet);background:#b6a3ff13;border-color:#b6a3ff44">H</div><h3>Lê Diễm Hằng</h3><span class="student-id">20225970</span><p>Tkinter client, test/practice screens, history/statistics and end-to-end scenarios.</p></article>
-        </div>
-        <div class="progress-caption"><strong>Checkpoint status</strong><span class="tag orange">IMPLEMENTATION NOT STARTED</span></div>
-        <div class="progress-strip">
-          <div class="progress-item done"><b>01 · Setup</b><small>Project repo + Compose environment</small></div>
-          <div class="progress-item done"><b>02 · Design</b><small>Architecture + protocol draft</small></div>
-          <div class="progress-item now"><b>03 · First slice</b><small>TCP framing + request/response</small></div>
-          <div class="progress-item"><b>04 · Full flows</b><small>Accounts, tests, GUI, stats</small></div>
+        <table class="simple-table">
+          <thead><tr><th>Member</th><th>Responsibility</th></tr></thead>
+          <tbody>
+            <tr><td>Trần Hữu Đức · 20225963</td><td>C TCP sockets and room lifecycle</td></tr>
+            <tr><td><strong>Trần Anh Dũng · 20226031</strong> · Project lead</td><td>Coordinate architecture, protocol, integration, and demo</td></tr>
+            <tr><td>Trần Cao Phong · 20226061</td><td>Accounts, access control, SQLite, activity log</td></tr>
+            <tr><td>Lê Diễm Hằng · 20225970</td><td>Tkinter client, history/statistics, end-to-end tests</td></tr>
+          </tbody>
+        </table>
+        <div class="simple-progress">
+          <div><b>Designed / checked</b><span>Flows, ERD, SQL schema, protocol; 12 schema checks</span></div>
+          <div class="pending"><b>Next</b><span>C TCP framing → accounts → attempts and rooms</span></div>
+          <div class="pending"><b>Not implemented</b><span>C application handlers and GUI</span></div>
         </div>
       </div>
-      <aside class="notes"><b>Closing:</b> “At this checkpoint, we have a separate repository, reproducible Compose environment, and preliminary architecture/protocol. Application features have not been implemented yet. Our first technical milestone is proving the C TCP framing with a minimal client/server round trip.”</aside>
+      <aside class="notes"><b>Closing:</b> Đã có repo, Compose, functional design, ERD, SQL và protocol contract. 12 schema checks chỉ xác minh database và query mẫu, không phải end-to-end app. Chưa có C handlers hay GUI. Thứ tự triển khai: TCP framing, auth/session, bank và practice/attempt, room/timer, GUI/history/stats, cuối cùng integration test.</aside>
     </section>
 
     <button class="notes-toggle" id="notesToggle" type="button" title="Toggle speaker notes (N)">N · Speaker notes</button>
     <div class="keyboard-hint">← → navigate &nbsp; · &nbsp; N notes &nbsp; · &nbsp; F fullscreen &nbsp; · &nbsp; P print</div>
     <nav class="controls" aria-label="Slide controls">
       <button class="control-btn" id="prev" aria-label="Previous slide" title="Previous (←)"><svg viewBox="0 0 20 20" fill="none"><path d="m12 4-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      <span id="counter" aria-live="polite">01 / 09</span>
+      <span id="counter" aria-live="polite">01 / 11</span>
       <button class="control-btn" id="next" aria-label="Next slide" title="Next (→)"><svg viewBox="0 0 20 20" fill="none"><path d="m8 4 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <button class="control-btn" id="fullscreen" aria-label="Toggle fullscreen" title="Fullscreen (F)"><svg viewBox="0 0 20 20" fill="none"><path d="M7 3H3v4m10-4h4v4M3 13v4h4m10-4v4h-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </nav>
@@ -517,6 +595,10 @@
   <script>
     (() => {
       const slides = [...document.querySelectorAll('.slide')];
+      slides.forEach((slide, i) => {
+        const number = slide.querySelector('.slide-num');
+        if (number) number.textContent = `${String(i + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
+      });
       const counter = document.getElementById('counter');
       const progress = document.getElementById('progress');
       const previous = document.getElementById('prev');

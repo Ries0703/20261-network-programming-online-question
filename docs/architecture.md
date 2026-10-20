@@ -20,10 +20,18 @@ and sends user actions.
 
 ```mermaid
 flowchart LR
-    U1[Room creator GUI<br/>Python Tkinter] -->|TCP + JSON lines| S[C server<br/>POSIX sockets]
-    U2[Participant GUI<br/>Python Tkinter] -->|TCP + JSON lines| S
-    U3[Practice user GUI<br/>Python Tkinter] -->|TCP + JSON lines| S
-    S -->|SQLite C API| DB[(SQLite database)]
+    U[Owner / participant / practice GUI] -->|TCP + JSON lines| IO
+    subgraph CServer[C server]
+        IO[Receive buffer and dispatcher] --> AUTH[Accounts / sessions / permission checks]
+        IO --> ROOM[Rooms / attempts / answer updates]
+        TIMER[Deadline scheduler] --> ROOM
+        ROOM --> SCORE[Scoring and storage]
+        AUTH --> SEND[Serialized response / event sends]
+        SCORE --> SEND
+    end
+    SEND -->|TCP| U
+    AUTH -->|SQLite C API| DB[(SQLite database)]
+    SCORE -->|Commit before ACK| DB
 ```
 
 ## Main server responsibilities
@@ -45,6 +53,8 @@ flowchart LR
 - [SQLite schema](../server/schema.sql): concrete tables, keys, checks, and indexes.
 - [Application protocol](application-protocol.md): command catalogue, response/event
   envelopes, limits, permissions, errors, and the test sequence.
+- [Worked room example](worked-example.md): concrete IDs, saved rows, messages,
+  and an early submission that leaves another participant active.
 
 Test Mode and Practice share `tests`, `test_questions`, `attempts`, and `answers`.
 One room has many participants' attempts; one practice test has one attempt.

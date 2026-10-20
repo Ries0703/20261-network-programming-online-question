@@ -407,7 +407,7 @@
         <p class="subtitle">Network Programming project · preliminary design and progress</p>
         <p><strong>Team:</strong> Trần Hữu Đức · Trần Anh Dũng · Trần Cao Phong · Lê Diễm Hằng</p>
       </div>
-      <aside class="notes"><b>Opening:</b> Giới thiệu đề tài thi trắc nghiệm online. Bài nói đi từ phạm vi chức năng đến kiến trúc, protocol, data model, phân công và tiến độ. Trình bày khoảng 13 phút, giữ 2 phút cho câu hỏi.</aside>
+      <aside class="notes"><b>Opening:</b> Dũng presents all 13 slides in approximately 15 minutes. Cover scope, architecture, protocol/framing, data model, task allocation and progress. Full English speech: docs/presentation-script-en.md.</aside>
     </section>
 
     <section class="slide" data-title="Requirements and objectives">
@@ -432,13 +432,18 @@
     <section class="slide" data-title="Environment and architecture">
       <div class="topline"><div><div class="eyebrow">02 · Development environment</div><h2>Tools and system architecture</h2></div><span class="slide-num">03 / 07</span></div>
       <div class="content">
-        <div class="simple-flow" aria-label="Client to server to database">
-          <div class="simple-node"><b>GUI Client</b><small>Python · Tkinter</small></div><span class="simple-arrow">→</span>
-          <div class="simple-node"><b>C Server</b><small>POSIX TCP sockets</small></div><span class="simple-arrow">→</span>
-          <div class="simple-node"><b>Database</b><small>SQLite</small></div>
-        </div>
-        <div class="simple-note"><strong>Tools:</strong> GCC, pthreads, cJSON, SQLite, libsodium, Make, Docker Compose.</div>
-        <p style="margin-top:2%">TCP + JSON Lines between client and server. The server manages sessions, rooms, deadlines, and scoring.</p>
+        <svg class="design-svg" viewBox="0 0 1000 365" role="img" aria-label="Tkinter clients connect by TCP to a C server with stream buffering, session and room services, deadline scheduler, scoring and SQLite persistence">
+          <rect class="design-box" x="10" y="110" width="200" height="150"/><text class="design-title" x="110" y="150" text-anchor="middle">GUI clients</text><text class="design-sub" x="110" y="185" text-anchor="middle">Python / Tkinter</text><text class="design-sub" x="110" y="220" text-anchor="middle">Owner / participant</text>
+          <rect class="design-box" x="310" y="15" width="440" height="335"/><text class="design-title" x="530" y="48" text-anchor="middle">C TCP server</text>
+          <rect class="design-box" x="330" y="70" width="400" height="55"/><text class="design-label" x="530" y="105" text-anchor="middle">Stream buffer / dispatcher</text>
+          <rect class="design-box" x="330" y="145" width="190" height="65"/><text class="design-sub" x="425" y="171" text-anchor="middle">Accounts / sessions</text><text class="design-sub" x="425" y="197" text-anchor="middle">Permission checks</text>
+          <rect class="design-box" x="540" y="145" width="190" height="65"/><text class="design-sub" x="635" y="171" text-anchor="middle">Rooms / attempts</text><text class="design-sub" x="635" y="197" text-anchor="middle">Answer updates</text>
+          <rect class="design-box" x="330" y="235" width="190" height="70"/><text class="design-sub" x="425" y="265" text-anchor="middle">Deadline scheduler</text><text class="design-sub" x="425" y="291" text-anchor="middle">Timeout handling</text>
+          <rect class="design-box" x="540" y="235" width="190" height="70"/><text class="design-sub" x="635" y="265" text-anchor="middle">Scoring / storage</text><text class="design-sub" x="635" y="291" text-anchor="middle">Commit then notify</text>
+          <rect class="design-box" x="850" y="110" width="140" height="150"/><text class="design-title" x="920" y="165" text-anchor="middle">SQLite</text><text class="design-sub" x="920" y="200" text-anchor="middle">Persistent data</text>
+          <path class="design-line" d="M210 185H310M750 185H850"/><text class="design-sub" x="260" y="160" text-anchor="middle">TCP</text><text class="design-sub" x="800" y="160" text-anchor="middle">C API</text>
+        </svg>
+        <div class="simple-note">POSIX sockets + pthreads; shared state and per-socket send locks. GCC, cJSON, SQLite, libsodium, Docker Compose.</div>
       </div>
       <aside class="notes"><b>Talking point:</b> Server dùng C/POSIX sockets giống homework; client dùng Python/Tkinter và TCP trực tiếp. SQLite lưu dữ liệu; libsodium hash password. Compose chuẩn hóa môi trường build Linux. Pthread phục vụ connection, scheduler xử lý deadline, mutex bảo vệ state và từng socket send.</aside>
     </section>
@@ -446,22 +451,47 @@
     <section class="slide" data-title="Application protocol">
       <div class="topline"><div><div class="eyebrow">03 · Communication design</div><h2>Application-layer protocol</h2></div><span class="slide-num">04 / 07</span></div>
       <div class="content">
-        <p>TCP + UTF-8 JSON Lines. <code>\n</code> denotes the LF byte <code>0x0A</code>.</p>
-        <pre class="plain-code"><span class="code-send">Client → Server</span>
-{"type":"ATTEMPT_SUBMIT","request_id":42,"data":{"attempt_id":11}}<span class="code-lf">\n</span>
-
-<span class="code-receive">Server → Client (event)</span>
-{"type":"EVENT","event":"TEST_FINISHED","data":{"test_id":41,"reason":"TIMEOUT"}}<span class="code-lf">\n</span></pre>
-        <div class="simple-note">Buffer reads until LF; use <code>send_all()</code> for partial writes. Only the server validates and scores answers.</div>
+        <table class="simple-table">
+          <thead><tr><th>Field</th><th>Type</th><th>Rule</th></tr></thead><tbody>
+            <tr><td><code>type</code></td><td>string</td><td>Command name, RESPONSE, or EVENT</td></tr>
+            <tr><td><code>request_id</code></td><td>positive integer</td><td>Request/response correlation</td></tr>
+            <tr><td><code>event</code></td><td>string</td><td>Required for server-push events</td></tr>
+            <tr><td><code>ok</code></td><td>boolean</td><td>Response success or failure</td></tr>
+            <tr><td><code>data / error</code></td><td>object</td><td>Payload, or error code + message</td></tr>
+          </tbody>
+        </table>
+        <pre class="plain-code" style="margin-top:2%;padding:2%">{"type":"ROOM_JOIN","request_id":42,"data":{"test_id":41}}<span class="code-lf">\n</span></pre>
       </div>
-      <aside class="notes"><b>Talking point:</b> TCP là byte stream nên phải tự buffer đến LF. Request dùng request_id để khớp RESPONSE; EVENT là thông báo chủ động từ server, ví dụ hết giờ. Hai dòng trên minh họa hai loại message độc lập, không phải event là response trực tiếp cho request ở trên. Frame tối đa 64 KiB; câu hỏi được lấy theo trang tối đa 5 câu.</aside>
+      <aside class="notes"><b>Talking point:</b> Đây là envelope JSON: type chọn command/RESPONSE/EVENT; request_id khớp request và response; ok là trạng thái response; data chứa payload, error chứa code/message. EVENT có event thay vì request_id. Ví dụ là request join room 41 có LF cuối dòng. Schema các field của từng command có trong application-protocol.md.</aside>
+    </section>
+
+    <section class="slide" data-title="TCP framing and validation">
+      <div class="topline"><div><div class="eyebrow">Transport and framing</div><h2>TCP reads are not messages</h2></div><span class="slide-num"></span></div>
+      <div class="content">
+        <p>Two valid requests may arrive across only two <code>recv()</code> calls:</p>
+        <pre class="plain-code" style="padding:2.5%"><span class="code-send">recv #1 — incomplete: keep in buffer</span>
+{"type":"ACCOUNT_
+
+<span class="code-receive">recv #2 — completes request 1, then contains request 2</span>
+GET","request_id":1,"data":{}}<span class="code-lf">\n</span>
+{"type":"LOGOUT","request_id":2,"data":{}}<span class="code-lf">\n</span></pre>
+        <div class="simple-note">Buffer → split at LF (0x0A) → parse JSON → validate fields. Maximum 64 KiB; oversized frames close the connection.</div>
+      </div>
+      <aside class="notes"><b>Talking point:</b> Hai dòng ACCOUNT_GET và LOGOUT là request hợp lệ, connection đã login. Recv đầu chỉ nhận một mảnh của type, chưa parse. Recv sau có phần còn lại đến LF rồi trọn request thứ hai. LF tô màu là ký hiệu hiển thị, byte thật là 0x0A. INVALID_JSON xử lý theo dòng; FRAME_TOO_LARGE trả lỗi và đóng kết nối. Dùng send_all cho partial writes.</aside>
     </section>
 
     <section class="slide" data-title="Protocol commands and access">
       <div class="topline"><div><div class="eyebrow">Protocol contracts</div><h2>Commands and access rules</h2></div><span class="slide-num"></span></div>
-      <div class="content simple-two-col">
-        <div><h3>Accounts and rooms</h3><p class="message-list">REGISTER · LOGIN<br>ROOM_CREATE · ROOM_LIST<br>ROOM_JOIN · ROOM_START<br>ROOM_END</p><p>Login binds identity to the connection. Only the owner starts/ends a room.</p></div>
-        <div><h3>Attempts and results</h3><p class="message-list">QUESTIONS_GET · ANSWER_SET<br>ATTEMPT_SUBMIT<br>ROOM_RESULTS_GET<br>HISTORY_GET · STATS_GET</p><p>Only your own attempt accepts answers. Responses carry data or a stable error code.</p></div>
+      <div class="content">
+        <table class="simple-table" style="font-size:clamp(19px,1.65cqw,26px)">
+          <thead><tr><th>Group</th><th>Client requests (selected)</th><th>Server events</th></tr></thead><tbody>
+            <tr><td>Account</td><td>REGISTER, LOGIN, LOGOUT</td><td>SESSION_EXPIRED</td></tr>
+            <tr><td>Room</td><td>ROOM_CREATE, ROOM_LIST, ROOM_JOIN<br>ROOM_START, ROOM_END</td><td>ROOM_STATE<br>TEST_STARTED</td></tr>
+            <tr><td>Attempt</td><td>QUESTIONS_GET, ANSWER_SET<br>ATTEMPT_SUBMIT</td><td>ATTEMPT_FINISHED<br>TEST_FINISHED</td></tr>
+            <tr><td>Results</td><td>ROOM_RESULTS_GET<br>HISTORY_GET, STATS_GET</td><td>—</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:2%">Every request receives RESPONSE with the same request_id. Events arrive independently. Permissions are checked per action.</p>
       </div>
       <aside class="notes"><b>Talking point:</b> Protocol có contract đầy đủ trong tài liệu: field, response, permission và lỗi cho từng lệnh. Login lưu session phía server; không tin user_id do client gửi. ANSWER_SET bắt buộc attempt_id, question_id, choice_key. Password hash dùng libsodium; đường truyền TCP hiện chưa mã hóa.</aside>
     </section>
@@ -533,7 +563,7 @@
           <rect class="design-box" x="750" y="220" width="230" height="135"/><text class="design-title" x="770" y="250">answers</text><text class="design-field" x="770" y="280">attempt_id</text><text class="design-field" x="770" y="305">question_id</text><text class="design-field" x="770" y="330">choice_key</text>
           <path class="design-line" d="M145 125V235M865 125V220M330 290H750"/><text class="design-sub" x="155" y="185">1 : N</text><text class="design-sub" x="875" y="180">1 : N</text><text class="design-sub" x="400" y="278">Only questions selected for this test</text>
         </svg>
-        <p>Room = many attempts. Practice = one attempt. Topic/difficulty filter tables and activity logs complete the schema.</p>
+        <p>Example: room 41 has attempts 11 and 12. Submitting attempt 11 leaves attempt 12 active. Practice has one attempt.</p>
       </div>
       <aside class="notes"><b>Talking point:</b> Tests giữ settings và bộ câu hỏi chung; attempts giữ bài làm cá nhân. Test_members có thể chưa có attempt khi room chưa start. Composite foreign key buộc answers thuộc đúng attempt/test và câu hỏi. Nộp sớm không kết thúc bài của người khác. Cùng mô hình phục vụ practice, tránh hai bộ logic chấm điểm khác nhau.</aside>
     </section>
@@ -561,23 +591,36 @@
       <aside class="notes"><b>Talking point:</b> Topic/difficulty, history và graphical statistics đều bắt buộc. Biểu đồ dùng dữ liệu giả 5/10, 6/10, 4/10, 7/10, 8/10. Khi số câu khác nhau, dùng tỷ lệ phần trăm. Overall accuracy tính tổng đúng chia tổng số câu, không lấy trung bình raw score. Chỉ tính bài đã final; câu bỏ trống tính sai.</aside>
     </section>
 
-    <section class="slide" data-title="Team and progress">
-      <div class="topline"><div><div class="eyebrow">06 · Team and progress</div><h2>Task allocation and current status</h2></div><span class="slide-num">07 / 07</span></div>
+    <section class="slide" data-title="Task allocation">
+      <div class="topline"><div><div class="eyebrow">Proposed task allocation</div><h2>Team responsibilities</h2></div><span class="slide-num"></span></div>
       <div class="content">
         <table class="simple-table">
-          <thead><tr><th>Member</th><th>Responsibility</th></tr></thead>
+          <thead><tr><th>Member</th><th>Student ID</th><th>Responsibility</th></tr></thead>
           <tbody>
-            <tr><td>Trần Hữu Đức · 20225963</td><td>C TCP sockets and room lifecycle</td></tr>
-            <tr><td><strong>Trần Anh Dũng · 20226031</strong> · Project lead</td><td>Coordinate architecture, protocol, integration, and demo</td></tr>
-            <tr><td>Trần Cao Phong · 20226061</td><td>Accounts, access control, SQLite, activity log</td></tr>
-            <tr><td>Lê Diễm Hằng · 20225970</td><td>Tkinter client, history/statistics, end-to-end tests</td></tr>
+            <tr><td>Trần Hữu Đức</td><td>20225963</td><td>C sockets and stream I/O; room/attempt state, deadlines and scoring</td></tr>
+            <tr><td><strong>Trần Anh Dũng</strong><br>Project lead</td><td>20226031</td><td>Architecture and message contracts; coordinate integration, review and demo</td></tr>
+            <tr><td>Trần Cao Phong</td><td>20226061</td><td>SQLite, accounts/sessions, permission checks and activity logging</td></tr>
+            <tr><td>Lê Diễm Hằng</td><td>20225970</td><td>Python TCP client, Tkinter UI, history/statistics and end-to-end tests</td></tr>
           </tbody>
         </table>
+      </div>
+      <aside class="notes"><b>Talking point:</b> Dũng điều phối kiến trúc, contract và tích hợp. Đức làm socket, framing và backend room/attempt/timer/scoring. Phong làm dữ liệu, auth/session/ACL/log. Hằng làm client TCP, Tkinter, history/chart UI và kiểm thử đầu cuối. Cụ thể đầu việc để cả nhóm có thể triển khai song song theo contract.</aside>
+    </section>
+
+    <section class="slide" data-title="Progress and implementation plan">
+      <div class="topline"><div><div class="eyebrow">Current progress</div><h2>Completed design and next steps</h2></div><span class="slide-num"></span></div>
+      <div class="content">
         <div class="simple-progress">
           <div><b>Designed / checked</b><span>Flows, ERD, SQL schema, protocol; 12 schema checks</span></div>
           <div class="pending"><b>Next</b><span>C TCP framing → accounts → attempts and rooms</span></div>
           <div class="pending"><b>Not implemented</b><span>C application handlers and GUI</span></div>
         </div>
+        <div class="simple-flow">
+          <div class="simple-node"><b>TCP + accounts</b><small>Framing, sessions</small></div><span class="simple-arrow">→</span>
+          <div class="simple-node"><b>Test services</b><small>Practice, rooms, scoring</small></div><span class="simple-arrow">→</span>
+          <div class="simple-node"><b>GUI + integration</b><small>History, charts, tests</small></div>
+        </div>
+        <p>Validate partial reads/writes, multiple clients, answer changes near deadlines, and early submission.</p>
       </div>
       <aside class="notes"><b>Closing:</b> Đã có repo, Compose, functional design, ERD, SQL và protocol contract. 12 schema checks chỉ xác minh database và query mẫu, không phải end-to-end app. Chưa có C handlers hay GUI. Thứ tự triển khai: TCP framing, auth/session, bank và practice/attempt, room/timer, GUI/history/stats, cuối cùng integration test.</aside>
     </section>
@@ -586,7 +629,7 @@
     <div class="keyboard-hint">← → navigate &nbsp; · &nbsp; N notes &nbsp; · &nbsp; F fullscreen &nbsp; · &nbsp; P print</div>
     <nav class="controls" aria-label="Slide controls">
       <button class="control-btn" id="prev" aria-label="Previous slide" title="Previous (←)"><svg viewBox="0 0 20 20" fill="none"><path d="m12 4-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      <span id="counter" aria-live="polite">01 / 11</span>
+      <span id="counter" aria-live="polite">01 / 13</span>
       <button class="control-btn" id="next" aria-label="Next slide" title="Next (→)"><svg viewBox="0 0 20 20" fill="none"><path d="m8 4 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <button class="control-btn" id="fullscreen" aria-label="Toggle fullscreen" title="Fullscreen (F)"><svg viewBox="0 0 20 20" fill="none"><path d="M7 3H3v4m10-4h4v4M3 13v4h4m10-4v4h-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </nav>

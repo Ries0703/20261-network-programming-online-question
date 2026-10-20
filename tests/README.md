@@ -10,6 +10,9 @@ python3 -m unittest discover -s tests -p test_schema.py -v
 
 These checks validate the proposed data schema, not the unimplemented C services.
 
+`python3 tests/check_worked_example.py` also validates the presentation's receive
+chunks and sample room/attempt records against an isolated in-memory database.
+
 Planned test layers:
 
 - Unit tests for message framing and room/scoring rules.

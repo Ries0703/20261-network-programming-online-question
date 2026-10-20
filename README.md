@@ -45,10 +45,10 @@ container is `/var/lib/online-testing-app` (`APP_DATA_DIR`).
 
 | Member | Responsibility |
 | --- | --- |
-| Trần Hữu Đức (`20225963`) | C TCP socket handling, message framing, multi-client connections, and test-room lifecycle/timers |
+| Trần Hữu Đức (`20225963`) | C sockets and stream I/O; connection threads, room/attempt state, deadlines, and scoring |
 | Trần Anh Dũng (`20226031`) | Project lead; coordinate scope and architecture, maintain the protocol contract, integrate modules, and lead the final demo |
 | Trần Cao Phong (`20226061`) | Account registration/login, sessions and access control, SQLite schema/persistence, and activity logging |
-| Lê Diễm Hằng (`20225970`) | Tkinter GUI and client integration, practice/history/statistics screens, and end-to-end test scenarios |
+| Lê Diễm Hằng (`20225970`) | Python TCP client, Tkinter UI, practice/history/statistics screens, and end-to-end tests |
 
 See [`docs/checkpoint-1.md`](docs/checkpoint-1.md) for the presentation outline.
 
@@ -59,6 +59,14 @@ development container with `make schema-check` from the host, or
 `python3 -m unittest discover -s tests -p test_schema.py -v` inside the container.
 
 ## Checkpoint presentation
+
+The [full English speaking script](docs/presentation-script-en.md) is timed
+for Trần Anh Dũng to present all 13 slides in approximately 15 minutes. It includes
+per-slide clock checkpoints, pauses, and rehearsal adjustments.
+The [Vietnamese reference script](docs/presentation-script-vi.md) is retained for
+the earlier 11-slide version; the English script matches the current deck.
+The [worked room example](docs/worked-example.md) connects sample messages to
+real schema rows. Validate it with `python3 tests/check_worked_example.py`.
 
 The self-contained HTML slide deck is at
 [`presentation/checkpoint-1.html`](presentation/checkpoint-1.html). Start the

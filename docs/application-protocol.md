@@ -13,6 +13,22 @@ The maximum encoded line is 65,536 bytes excluding LF. An oversized frame causes
 `INVALID_JSON`; other well-framed request errors keep the connection open.
 Handlers validate required fields and their types.
 
+### Receive-buffer example
+
+Assume a connection is already authenticated. The following are two complete
+requests when concatenated, with one LF after each object:
+
+```text
+recv #1: {"type":"ACCOUNT_
+recv #2: GET","request_id":1,"data":{}}\n{"type":"LOGOUT","request_id":2,"data":{}}\n
+```
+
+The receiver retains the first fragment. After the second read, it extracts and
+parses ACCOUNT_GET, then LOGOUT, in order. The two visible `\n` markers represent
+LF bytes. An LF inside a string must instead be JSON-escaped so it is not treated
+as a frame boundary. No complete LF-terminated object means wait for more bytes,
+not an immediate JSON error.
+
 Limits: question count 1–100; duration 60–7,200 seconds; room members at most 50;
 title at most 128 UTF-8 bytes; prompt at most 2,048 bytes; each of four choice
 texts at most 512 bytes. Question pages contain at most five questions. Other
@@ -24,6 +40,20 @@ without putting a complete 100-question test into one message.
 Request IDs are positive integers, unique among outstanding requests on a
 connection. TCP request order is preserved. IDs correlate responses; they are
 not authorization tokens or durable retry keys.
+
+| Field | JSON type | Required condition |
+| --- | --- | --- |
+| type | string | Every message: command name, RESPONSE, or EVENT |
+| request_id | integer, 1–4,294,967,295 | Requests and normal responses; echoed exactly |
+| event | string | EVENT only; selects a server-push event |
+| ok | boolean | RESPONSE only |
+| data | object | Requests, events, and successful responses |
+| error | object with string code/message | Failed response instead of data |
+
+If the frame cannot be parsed or has no valid request ID, a protocol-error
+response uses request_id=null. Invalid JSON keeps the connection open after that
+line is discarded; FRAME_TOO_LARGE closes it. This exception does not permit
+clients to send null IDs on valid requests.
 
 ```json
 {"type":"LOGIN","request_id":1,"data":{"username":"student","password":"example-password"}}

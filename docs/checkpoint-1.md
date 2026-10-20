@@ -81,10 +81,10 @@ member; Practice Mode uses the same entities with one member.
 
 | Member | Proposed responsibility |
 | --- | --- |
-| Trần Hữu Đức (`20225963`) | C TCP socket handling, message framing, multi-client connections, and test-room lifecycle/timers |
+| Trần Hữu Đức (`20225963`) | C sockets and stream I/O; connection threads, room/attempt state, deadlines, and scoring |
 | Trần Anh Dũng (`20226031`) | Project lead; coordinate scope and architecture, maintain the protocol contract, integrate modules, and lead the final demo |
 | Trần Cao Phong (`20226061`) | Account registration/login, sessions and access control, SQLite schema/persistence, and activity logging |
-| Lê Diễm Hằng (`20225970`) | Tkinter GUI and client integration, practice/history/statistics screens, and end-to-end test scenarios |
+| Lê Diễm Hằng (`20225970`) | Python TCP client, Tkinter UI, practice/history/statistics screens, and end-to-end tests |
 
 ## 7. Current progress
 
@@ -113,13 +113,24 @@ GUI. All specified functions are required deliverables.
 
 ## 10. Suggested presentation timing
 
-| Slides | Focus | Time |
-| --- | --- | --- |
-| 1–3 | Topic, full feature scope, tools, and architecture | 3 min |
-| 4–7 | Framing, commands/access, room/practice flow, and message sequence | 4 min |
-| 8–9 | Data model and why tests/attempts are separate | 3 min |
-| 10–11 | Filters/history/statistics, team, progress, and next steps | 3 min |
-| Discussion | Questions and feedback | 2 min |
+| Slide | Focus | Time | Clock |
+| --- | --- | --- | --- |
+| 1 | Topic and introduction | 35 sec | 00:00–00:35 |
+| 2 | Full required feature scope | 65 sec | 00:35–01:40 |
+| 3 | Server modules and architecture | 75 sec | 01:40–02:55 |
+| 4 | Message fields and types | 65 sec | 02:55–04:00 |
+| 5 | TCP framing and validation | 65 sec | 04:00–05:05 |
+| 6 | Request/response/event catalogue | 60 sec | 05:05–06:05 |
+| 7 | Test and practice lifecycle | 75 sec | 06:05–07:20 |
+| 8 | Message sequence | 75 sec | 07:20–08:35 |
+| 9 | Accounts and question model | 75 sec | 08:35–09:50 |
+| 10 | Tests, attempts, and answers | 90 sec | 09:50–11:20 |
+| 11 | Filters/history/statistics | 70 sec | 11:20–12:30 |
+| 12 | Technical task allocation | 60 sec | 12:30–13:30 |
+| 13 | Progress and next steps | 90 sec | 13:30–15:00 |
 
-The main presentation takes about 13 minutes. Each slide keeps only its key
-points; detailed fields, constraints, and edge cases stay in the linked documents.
+The full presentation targets 15 minutes, with questions afterward. The
+[English speaking script](presentation-script-en.md) is written for Trần Anh
+Dũng to present all 13 slides. Rehearsal should use the clock checkpoints above.
+The [worked example](worked-example.md) provides concrete room/attempt/answer
+records and their request/response flow, validated against the SQL schema.
